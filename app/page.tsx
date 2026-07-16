@@ -23,6 +23,8 @@ export default function Home() {
   const [scene, setScene] = useState<Scene>("home");
   const [line, setLine] = useState(dialogue.home);
   const [typed, setTyped] = useState("");
+  const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
+  const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -45,6 +47,47 @@ export default function Home() {
     }, 42);
     return () => window.clearInterval(timer);
   }, [line]);
+
+  useEffect(() => {
+    const timers: number[] = [];
+    let cancelled = false;
+
+    const scheduleBlink = () => {
+      const wait = 2400 + Math.random() * 3200;
+      timers.push(window.setTimeout(() => {
+        if (cancelled) return;
+        setEyeFrame("half");
+        timers.push(window.setTimeout(() => setEyeFrame("closed"), 65));
+        timers.push(window.setTimeout(() => setEyeFrame("half"), 150));
+        timers.push(window.setTimeout(() => {
+          setEyeFrame("open");
+          scheduleBlink();
+        }, 225));
+      }, wait));
+    };
+
+    scheduleBlink();
+    return () => {
+      cancelled = true;
+      timers.forEach((timer) => window.clearTimeout(timer));
+    };
+  }, []);
+
+  useEffect(() => {
+    if (typed.length >= line.length) {
+      setMouthFrame("closed");
+      return;
+    }
+
+    const frames: Array<"closed" | "half" | "open"> = ["half", "open", "half", "closed", "half"];
+    let index = 0;
+    const timer = window.setInterval(() => {
+      setMouthFrame(frames[index % frames.length]);
+      index += 1;
+    }, 105);
+
+    return () => window.clearInterval(timer);
+  }, [typed, line]);
 
   const sceneTitle = useMemo(
     () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "LINKS" })[scene],
@@ -126,15 +169,12 @@ export default function Home() {
           <em>ABOUT</em>
         </button>
 
-        <aside className="character" aria-label="案内役の仮キャラクター">
+        <aside className="character" aria-label="案内役のキャラクター">
           <div className="character-shadow" />
-          <div className="rabbit-person">
-            <span className="long-ear long-ear--left" />
-            <span className="long-ear long-ear--right" />
-            <span className="head"><i className="eye eye--left" /><i className="eye eye--right" /><b>×</b></span>
-            <span className="collar" />
-            <span className="body"><i className="apron">07</i></span>
-            <span className="arm arm--left" /><span className="arm arm--right" />
+          <div className="character-art" aria-hidden="true">
+            <img className="character-base" src="/character/base.png" alt="" />
+            <img className="character-eyes" src={`/character/eyes-${eyeFrame}.png`} alt="" />
+            <img className={`character-mouth character-mouth--${mouthFrame}`} src={`/character/mouth-${mouthFrame}.png`} alt="" />
           </div>
           <p>STAFF / NO.07</p>
         </aside>
