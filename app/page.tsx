@@ -25,6 +25,7 @@ export default function Home() {
   const [typed, setTyped] = useState("");
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
+  const isTyping = loaded && typed.length < line.length;
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -38,6 +39,11 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    if (!loaded) {
+      setTyped("");
+      return;
+    }
+
     setTyped("");
     let index = 0;
     const timer = window.setInterval(() => {
@@ -46,7 +52,7 @@ export default function Home() {
       if (index >= line.length) window.clearInterval(timer);
     }, 42);
     return () => window.clearInterval(timer);
-  }, [line]);
+  }, [line, loaded]);
 
   useEffect(() => {
     const timers: number[] = [];
@@ -74,20 +80,21 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (typed.length >= line.length) {
+    if (!isTyping) {
       setMouthFrame("closed");
       return;
     }
 
     const frames: Array<"closed" | "half" | "open"> = ["half", "open", "half", "closed", "half"];
     let index = 0;
+    setMouthFrame(frames[index]);
     const timer = window.setInterval(() => {
-      setMouthFrame(frames[index % frames.length]);
       index += 1;
-    }, 105);
+      setMouthFrame(frames[index % frames.length]);
+    }, 90);
 
     return () => window.clearInterval(timer);
-  }, [typed, line]);
+  }, [isTyping]);
 
   const sceneTitle = useMemo(
     () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "LINKS" })[scene],
@@ -173,8 +180,22 @@ export default function Home() {
           <div className="character-shadow" />
           <div className="character-art" aria-hidden="true">
             <img className="character-base" src="/character/base.png" alt="" />
-            <img className="character-eyes" src={`/character/eyes-${eyeFrame}.png`} alt="" />
-            <img className={`character-mouth character-mouth--${mouthFrame}`} src={`/character/mouth-${mouthFrame}.png`} alt="" />
+            {(["open", "half", "closed"] as const).map((frame) => (
+              <img
+                key={`eyes-${frame}`}
+                className={`character-layer character-eyes ${eyeFrame === frame ? "is-active" : ""}`}
+                src={`/character/eyes-${frame}.png`}
+                alt=""
+              />
+            ))}
+            {(["closed", "half", "open"] as const).map((frame) => (
+              <img
+                key={`mouth-${frame}`}
+                className={`character-layer character-mouth ${mouthFrame === frame ? "is-active" : ""}`}
+                src={`/character/mouth-${frame}.png`}
+                alt=""
+              />
+            ))}
           </div>
           <p>STAFF / NO.07</p>
         </aside>
