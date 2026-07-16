@@ -211,17 +211,17 @@ export default function Home() {
                   <p className="book-kicker">TONIGHT&apos;S SPECIALS</p>
                   <h2>MENU</h2>
                   {works.slice(0, 2).map((work, index) => (
-                    <a href="#dialogue" onClick={() => setLine(`${work.title}。${work.note}だよ。`)} className="work-link" key={work.title}>
+                    <button type="button" onClick={() => setLine(`${work.title}。${work.note}だよ。`)} className="work-link" key={work.title}>
                       <small>0{index + 1} / {work.tag}</small><strong>{work.title}</strong><span>{work.note}</span>
-                    </a>
+                    </button>
                   ))}
                 </div>
                 <div className="book-page">
                   <p className="book-kicker">DESSERT &amp; ART</p>
                   <h2>GALLERY</h2>
-                  <a href="#dialogue" onClick={() => setLine(`${works[2].title}。${works[2].note}だよ。`)} className="work-link">
+                  <button type="button" onClick={() => setLine(`${works[2].title}。${works[2].note}だよ。`)} className="work-link">
                     <small>03 / {works[2].tag}</small><strong>{works[2].title}</strong><span>{works[2].note}</span>
-                  </a>
+                  </button>
                   <div className="menu-note">NEW ITEMS<br />COMING SOON…</div>
                 </div>
               </div>
@@ -236,8 +236,8 @@ export default function Home() {
             {scene === "links" && (
               <div className="info-card links-card">
                 <p className="book-kicker">OUTSIDE LINE</p><h2>どこへ電話する？</h2>
-                <a href="#dialogue" onClick={() => setLine("イラストを置いている場所につなぐね。")}>ILLUSTRATION SNS <span>→</span></a>
-                <a href="#dialogue" onClick={() => setLine("制作記録のページにつなぐね。")}>DEV LOG <span>→</span></a>
+                <button type="button" onClick={() => setLine("イラストを置いている場所につなぐね。")}>ILLUSTRATION SNS <span>→</span></button>
+                <button type="button" onClick={() => setLine("制作記録のページにつなぐね。")}>DEV LOG <span>→</span></button>
                 <a href="mailto:hello@example.com">MAIL <span>→</span></a>
               </div>
             )}
