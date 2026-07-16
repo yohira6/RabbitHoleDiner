@@ -25,6 +25,7 @@ export default function Home() {
   const [typed, setTyped] = useState("");
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
+  const [characterReaction, setCharacterReaction] = useState<"head" | "chest" | null>(null);
   const isTyping = loaded && typed.length < line.length;
 
   useEffect(() => {
@@ -96,6 +97,12 @@ export default function Home() {
     return () => window.clearInterval(timer);
   }, [isTyping]);
 
+  useEffect(() => {
+    if (!characterReaction) return;
+    const timer = window.setTimeout(() => setCharacterReaction(null), 520);
+    return () => window.clearTimeout(timer);
+  }, [characterReaction]);
+
   const sceneTitle = useMemo(
     () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "LINKS" })[scene],
     [scene],
@@ -104,6 +111,15 @@ export default function Home() {
   const openScene = (next: Scene) => {
     setScene(next);
     setLine(dialogue[next]);
+  };
+
+  const reactToCharacter = (target: "head" | "chest") => {
+    setCharacterReaction(target);
+    setLine(
+      target === "head"
+        ? "……帽子、ずれてた？　触るなら、やさしくしてね。"
+        : "そこは注文ボタンじゃないよ……メニューなら、テーブルの上。",
+    );
   };
 
   if (!loaded) {
@@ -178,7 +194,7 @@ export default function Home() {
 
         {scene !== "home" && <div className="scene-dimmer" aria-hidden="true" />}
 
-        <aside className={`character ${scene !== "home" ? "character--overlay" : ""}`} aria-label="案内役のキャラクター">
+        <aside className={`character ${scene !== "home" ? "character--overlay" : ""} ${characterReaction ? `character--reaction-${characterReaction}` : ""}`} aria-label="案内役のキャラクター">
           <div className="character-shadow" />
           <div className="character-art" aria-hidden="true">
             <img className="character-base" src="/character/base.png" alt="" />
@@ -198,6 +214,8 @@ export default function Home() {
                 alt=""
               />
             ))}
+            <button className="character-touch-zone character-touch-zone--head" type="button" onClick={() => reactToCharacter("head")} aria-label="キャラクターの頭に触れる" />
+            <button className="character-touch-zone character-touch-zone--chest" type="button" onClick={() => reactToCharacter("chest")} aria-label="キャラクターの胸元に触れる" />
           </div>
           <p>STAFF / NO.07</p>
         </aside>

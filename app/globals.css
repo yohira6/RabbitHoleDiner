@@ -67,6 +67,13 @@ button { color: inherit; }
 .character-layer.is-active { opacity: 1; }
 .character-eyes { z-index: 2; }
 .character-mouth { z-index: 3; }
+.character-touch-zone { position: absolute; z-index: 6; border: 0; background: transparent; pointer-events: auto; cursor: pointer; }
+.character-touch-zone--head { left: 35%; top: 5%; width: 31%; height: 18%; border-radius: 48%; }
+.character-touch-zone--chest { left: 31%; top: 23%; width: 40%; height: 18%; border-radius: 42%; }
+.character-touch-zone:hover { background: rgba(231, 184, 76, .07); }
+.character-touch-zone:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.character--reaction-head .character-art { animation: character-head-reaction .52s ease, character-breathe 3.2s .52s ease-in-out infinite; }
+.character--reaction-chest .character-art { animation: character-chest-reaction .52s ease, character-breathe 3.2s .52s ease-in-out infinite; }
 .character--overlay { z-index: 40; right: -8%; left: auto; top: -1%; width: 55%; height: 170%; }
 .character--overlay p, .character--overlay .character-shadow { display: none; }
 .overlay-panel { position: absolute; z-index: 30; inset: 6% 34% 22% 4%; filter: drop-shadow(12px 14px 0 rgba(18,57,71,.35)); animation: panel-in .35s cubic-bezier(.2,.8,.2,1); }.panel-close { position: absolute; z-index: 4; right: -14px; top: -14px; width: 42px; aspect-ratio: 1; border: 3px solid var(--ink); border-radius: 50%; color: var(--paper); background: var(--red); font-size: 24px; cursor: pointer; }.panel-close:focus-visible { outline: 3px solid var(--gold); }
@@ -79,6 +86,8 @@ button { color: inherit; }
 @keyframes loading-hop { to { transform: translateY(-12px) rotate(2deg); } }
 @keyframes blink { 50% { opacity: .25; } }
 @keyframes character-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-.6%) scale(1.006, 1.012); } }
+@keyframes character-head-reaction { 0%, 100% { transform: translateY(0) rotate(0); } 42% { transform: translateY(1.2%) rotate(-1.4deg) scale(.995, 1.008); } }
+@keyframes character-chest-reaction { 0%, 100% { transform: translateX(0) scale(1); } 38% { transform: translateX(-1.4%) scale(.992, 1.008); } 68% { transform: translateX(.5%) scale(1.002, .998); } }
 @keyframes dimmer-in { from { opacity: 0; } }
 @keyframes panel-in { from { opacity: 0; transform: translateY(30px) scale(.96); } }
 
