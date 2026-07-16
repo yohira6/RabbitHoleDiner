@@ -17,8 +17,45 @@ const works = [
   { tag: "ILLUSTRATION", title: "Rabbit Hole Sketches", note: "ダイナーの設定画集" },
 ];
 
+type LoadingScreenProps = {
+  progress: number;
+  exiting?: boolean;
+  onEnter: () => void;
+};
+
+function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProps) {
+  return (
+    <main className={`loading-screen ${exiting ? "loading-screen--exiting" : ""}`}>
+      <header className="brand brand--loading">
+        <span>RabbitHole</span>
+        <span>Diner</span>
+        <span className="brand-rabbit" aria-hidden="true">♧</span>
+      </header>
+      <section className="loading-card" aria-live="polite">
+        <div className="loading-rabbit" aria-hidden="true">
+          <i className="ear ear--left" />
+          <i className="ear ear--right" />
+          <b>×</b>
+        </div>
+        <p className="eyebrow">WELCOME, NIGHT OWL</p>
+        <h1>Now Loading…</h1>
+        <div className="loading-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
+          <span style={{ width: `${progress}%` }} />
+        </div>
+        <p className="loading-count">{progress.toString().padStart(3, "0")}%</p>
+        <button className="enter-button" type="button" disabled={progress < 100 || exiting} onClick={onEnter}>
+          {progress < 100 ? "PREPARING TABLE…" : "ENTER THE DINER"}
+        </button>
+      </section>
+      <footer className="loading-footer">OPEN AFTER MIDNIGHT · TABLE No. 07</footer>
+    </main>
+  );
+}
+
 export default function Home() {
   const [loaded, setLoaded] = useState(false);
+  const [showLoading, setShowLoading] = useState(true);
+  const [loadingExiting, setLoadingExiting] = useState(false);
   const [progress, setProgress] = useState(0);
   const [scene, setScene] = useState<Scene>("home");
   const [line, setLine] = useState(dialogue.home);
@@ -38,6 +75,12 @@ export default function Home() {
     }, 55);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!loadingExiting) return;
+    const timer = window.setTimeout(() => setShowLoading(false), 720);
+    return () => window.clearTimeout(timer);
+  }, [loadingExiting]);
 
   useEffect(() => {
     if (!loaded) {
@@ -122,37 +165,20 @@ export default function Home() {
     );
   };
 
+  const enterDiner = () => {
+    if (progress < 100 || loadingExiting) return;
+    setLoaded(true);
+    setLoadingExiting(true);
+  };
+
   if (!loaded) {
-    return (
-      <main className="loading-screen">
-        <header className="brand brand--loading">
-          <span>RabbitHole</span>
-          <span>Diner</span>
-          <span className="brand-rabbit" aria-hidden="true">♧</span>
-        </header>
-        <section className="loading-card" aria-live="polite">
-          <div className="loading-rabbit" aria-hidden="true">
-            <i className="ear ear--left" />
-            <i className="ear ear--right" />
-            <b>×</b>
-          </div>
-          <p className="eyebrow">WELCOME, NIGHT OWL</p>
-          <h1>Now Loading…</h1>
-          <div className="loading-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
-            <span style={{ width: `${progress}%` }} />
-          </div>
-          <p className="loading-count">{progress.toString().padStart(3, "0")}%</p>
-          <button className="enter-button" type="button" disabled={progress < 100} onClick={() => setLoaded(true)}>
-            {progress < 100 ? "PREPARING TABLE…" : "ENTER THE DINER"}
-          </button>
-        </section>
-        <footer className="loading-footer">OPEN AFTER MIDNIGHT · TABLE No. 07</footer>
-      </main>
-    );
+    return <LoadingScreen progress={progress} onEnter={enterDiner} />;
   }
 
   return (
-    <main className="site-shell">
+    <>
+      {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} />}
+      <main className="site-shell">
       <header className="topbar">
         <button className="brand brand--button" onClick={() => openScene("home")} aria-label="ホームへ戻る">
           <span>RabbitHole</span><span>Diner</span><span aria-hidden="true">♧</span>
@@ -277,6 +303,7 @@ export default function Home() {
         ))}
       </nav>
       <footer className="site-footer"><span>© 2026 RABBIT HOLE DINER</span><span>BEST VIEWED AFTER DARK</span></footer>
-    </main>
+      </main>
+    </>
   );
 }

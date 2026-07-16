@@ -17,7 +17,8 @@ body { margin: 0; color: var(--ink); background: var(--cream); font-family: "Yu 
 button, a { font: inherit; }
 button { color: inherit; }
 
-.loading-screen { min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(18px, 3vw, 44px); background: radial-gradient(circle at 50% 40%, #fffdf6 0 18%, transparent 55%), var(--cream); }
+.loading-screen { position: fixed; z-index: 1000; inset: 0; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(18px, 3vw, 44px); background: radial-gradient(circle at 50% 40%, #fffdf6 0 18%, transparent 55%), var(--cream); opacity: 1; }
+.loading-screen--exiting { pointer-events: none; animation: loading-fade-out .72s cubic-bezier(.4, 0, .2, 1) forwards; }
 .brand { color: var(--red); font-family: "Arial Rounded MT Bold", "Trebuchet MS", sans-serif; font-weight: 900; letter-spacing: -0.075em; transform: rotate(-1deg); }
 .brand span { display: inline-block; margin-right: .32em; }
 .brand--loading { font-size: clamp(30px, 4.2vw, 68px); }
@@ -84,12 +85,17 @@ button { color: inherit; }
 .site-footer { max-width: 1500px; margin: 30px auto 0; padding-top: 12px; display: flex; justify-content: space-between; border-top: 2px solid var(--red); font: 800 9px ui-monospace, monospace; letter-spacing: .15em; }
 
 @keyframes loading-hop { to { transform: translateY(-12px) rotate(2deg); } }
+@keyframes loading-fade-out { to { opacity: 0; transform: scale(1.012); filter: blur(2px); } }
 @keyframes blink { 50% { opacity: .25; } }
 @keyframes character-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-.6%) scale(1.006, 1.012); } }
 @keyframes character-head-reaction { 0%, 100% { transform: translateY(0) rotate(0); } 42% { transform: translateY(1.2%) rotate(-1.4deg) scale(.995, 1.008); } }
 @keyframes character-chest-reaction { 0%, 100% { transform: translateX(0) scale(1); } 38% { transform: translateX(-1.4%) scale(.992, 1.008); } 68% { transform: translateX(.5%) scale(1.002, .998); } }
 @keyframes dimmer-in { from { opacity: 0; } }
 @keyframes panel-in { from { opacity: 0; transform: translateY(30px) scale(.96); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .loading-screen--exiting { animation-duration: .01ms; }
+}
 
 @media (max-width: 800px) {
   .site-shell { padding: 12px 8px 22px; }
