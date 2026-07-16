@@ -144,7 +144,7 @@ export default function Home() {
         <div className="open-sign"><span /> OPEN <small>00:00—05:00</small></div>
       </header>
 
-      <section className="game-frame" aria-label="RabbitHole Diner 店内">
+      <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
         <div className="diner-window" aria-hidden="true">
           <span className="moon" />
@@ -176,7 +176,9 @@ export default function Home() {
           <em>ABOUT</em>
         </button>
 
-        <aside className="character" aria-label="案内役のキャラクター">
+        {scene !== "home" && <div className="scene-dimmer" aria-hidden="true" />}
+
+        <aside className={`character ${scene !== "home" ? "character--overlay" : ""}`} aria-label="案内役のキャラクター">
           <div className="character-shadow" />
           <div className="character-art" aria-hidden="true">
             <img className="character-base" src="/character/base.png" alt="" />
