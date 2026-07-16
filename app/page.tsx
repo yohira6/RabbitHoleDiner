@@ -171,14 +171,10 @@ export default function Home() {
     setLoadingExiting(true);
   };
 
-  if (!loaded) {
-    return <LoadingScreen progress={progress} onEnter={enterDiner} />;
-  }
-
   return (
     <>
       {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} />}
-      <main className="site-shell">
+      {loaded && <main className="site-shell">
       <header className="topbar">
         <button className="brand brand--button" onClick={() => openScene("home")} aria-label="ホームへ戻る">
           <span>RabbitHole</span><span>Diner</span><span aria-hidden="true">♧</span>
@@ -303,7 +299,7 @@ export default function Home() {
         ))}
       </nav>
       <footer className="site-footer"><span>© 2026 RABBIT HOLE DINER</span><span>BEST VIEWED AFTER DARK</span></footer>
-      </main>
+      </main>}
     </>
   );
 }
