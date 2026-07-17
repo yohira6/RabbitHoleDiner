@@ -47,7 +47,7 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
         <div className="loading-rabbit-badge" aria-hidden="true">
           <img src="/branding/rabbit-loading.png" alt="" />
         </div>
-        <p className="eyebrow">WELCOME, NIGHT OWL</p>
+        <p className="eyebrow">WELCOME, GUEST</p>
         <h1>Now Loading…</h1>
         <div className="loading-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
           <span style={{ width: `${progress}%` }} />
@@ -57,7 +57,7 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
           {progress < 100 ? "PREPARING TABLE…" : "ENTER THE DINER"}
         </button>
       </section>
-      <footer className="loading-footer">OPEN AFTER MIDNIGHT · TABLE No. 07</footer>
+      <footer className="loading-footer">© 2026 RABBIT PUNCH</footer>
     </main>
   );
 }
@@ -364,7 +364,7 @@ export default function Home() {
           </button>
         ))}
       </nav>
-      <footer className="site-footer"><span>© 2026 RABBIT HOLE DINER</span><span>BEST VIEWED AFTER DARK</span></footer>
+      <footer className="site-footer"><span>© 2026 RABBIT PUNCH</span><span>BEST VIEWED AFTER DARK</span></footer>
       </main>}
     </>
   );
