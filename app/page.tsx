@@ -184,33 +184,41 @@ export default function Home() {
 
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
-        <div className="cube-stage" aria-hidden="true">
-          <div className="cube-float">
-            <div className="void-cube">
+        <div className="cube-stage">
+          <button
+            className="cube-trigger"
+            type="button"
+            aria-label="窓の奥で回転する立方体に触れる"
+            onMouseEnter={() => setLine("淡い立方体が、音もなく窓の奥で回り続けている。")}
+            onClick={() => setLine("こつん……触れた感触だけが、少し遅れて返ってきた。")}
+          >
+            <span className="cube-float" aria-hidden="true">
+              <span className="void-cube">
               <span className="cube-face cube-face--front" />
               <span className="cube-face cube-face--back" />
               <span className="cube-face cube-face--right" />
               <span className="cube-face cube-face--left" />
               <span className="cube-face cube-face--top" />
               <span className="cube-face cube-face--bottom" />
-            </div>
-          </div>
+              </span>
+            </span>
+          </button>
         </div>
         <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
 
-        <button className="hotspot bell" onClick={() => setLine("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
+        <button className="hotspot bell" onMouseEnter={() => setLine("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => setLine("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
           <span className="bell-dome" /><span className="bell-base" /><em>RING</em>
         </button>
 
-        <button className="hotspot menu-object" onClick={() => openScene("menu")} aria-label="メニューブックを開く">
+        <button className="hotspot menu-object" onMouseEnter={() => setLine("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
           <span>MENU</span><em>OPEN</em>
         </button>
 
-        <button className="hotspot phone" onClick={() => openScene("links")} aria-label="電話からリンクを見る">
+        <button className="hotspot phone" onMouseEnter={() => setLine("古い電話機。受話器の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="電話からリンクを見る">
           <span className="receiver" /><span className="dial">•••<br />•••</span><em>CALL</em>
         </button>
 
-        <button className="hotspot picture" onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
+        <button className="hotspot picture" onMouseEnter={() => setLine("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
           <span className="picture-rabbit" aria-hidden="true"><i /><b>×</b></span>
           <em>ABOUT</em>
         </button>
