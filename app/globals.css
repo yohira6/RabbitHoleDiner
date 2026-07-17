@@ -20,13 +20,13 @@ button { color: inherit; }
 .loading-screen { position: fixed; z-index: 1000; inset: 0; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(18px, 3vw, 44px); background: radial-gradient(circle at 50% 40%, #fffdf6 0 18%, transparent 55%), var(--cream); opacity: 1; }
 .loading-screen--exiting { pointer-events: none; animation: loading-fade-out .72s cubic-bezier(.4, 0, .2, 1) forwards; }
 .brand { display: block; }
-.brand-logo { position: relative; display: block; overflow: hidden; width: 100%; aspect-ratio: 1747 / 230; }
-.brand-logo img { position: absolute; left: -4.29%; top: -186.9%; display: block; width: 109.9%; height: auto; user-select: none; }
+.brand-logo { position: relative; display: block; overflow: hidden; width: 100%; aspect-ratio: 1860 / 420; }
+.brand-logo img { position: absolute; left: -1.08%; top: -71.43%; display: block; width: 103.23%; height: auto; user-select: none; }
 .brand--loading { width: min(1000px, 92vw); }
 .loading-card { width: min(760px, 88vw); margin: auto; padding: 8vh 6vw 5vh; text-align: center; border: 4px solid var(--red); box-shadow: 12px 12px 0 var(--teal); position: relative; background: color-mix(in srgb, var(--paper) 92%, transparent); }
 .loading-card h1 { margin: 0 0 24px; font: 800 clamp(42px, 8vw, 94px)/.9 "Arial Rounded MT Bold", sans-serif; color: var(--teal); letter-spacing: -.07em; }
 .eyebrow, .loading-footer { font: 700 12px/1.2 ui-monospace, monospace; letter-spacing: .22em; }
-.loading-rabbit { display: block; width: clamp(120px, 14vw, 210px); height: auto; margin: -4vh auto 24px; filter: brightness(0) saturate(100%) invert(20%) sepia(96%) saturate(3610%) hue-rotate(355deg) brightness(92%) contrast(87%); transform-origin: 50% 42.15%; animation: loading-spin 2.2s cubic-bezier(.45, 0, .55, 1) infinite; }
+.loading-rabbit { display: block; width: clamp(120px, 14vw, 210px); height: auto; margin: -4vh auto 24px; filter: brightness(0) saturate(100%) invert(20%) sepia(96%) saturate(3610%) hue-rotate(355deg) brightness(92%) contrast(87%); transform-origin: 50% 42.15%; transform-style: preserve-3d; backface-visibility: visible; animation: loading-flip 2.2s cubic-bezier(.45, 0, .55, 1) infinite; }
 .loading-track { height: 48px; padding: 5px; border: 4px solid var(--teal); background: var(--paper); overflow: hidden; }
 .loading-track span { display: block; height: 100%; background: repeating-linear-gradient(135deg, var(--teal) 0 32px, var(--paper) 32px 55px); transition: width .12s linear; }
 .loading-count { margin: 10px 0 22px; text-align: right; font: 800 13px ui-monospace, monospace; letter-spacing: .15em; }
@@ -97,7 +97,7 @@ button { color: inherit; }
 .enter-button:hover, .enter-button:focus-visible, .brand--button:hover, .brand--button:focus-visible, .dialogue > button:hover, .dialogue > button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; transform: scale(1.04); }
 .site-footer { max-width: 1500px; margin: 30px auto 0; padding-top: 12px; display: flex; justify-content: space-between; border-top: 2px solid var(--red); font: 800 9px ui-monospace, monospace; letter-spacing: .15em; }
 
-@keyframes loading-spin { 0%, 12% { transform: rotate(0deg); } 88%, 100% { transform: rotate(360deg); } }
+@keyframes loading-flip { 0%, 12% { transform: perspective(520px) rotateX(5deg) rotateY(0deg); } 88%, 100% { transform: perspective(520px) rotateX(5deg) rotateY(360deg); } }
 @keyframes loading-fade-out { to { opacity: 0; transform: scale(1.012); filter: blur(2px); } }
 @keyframes blink { 50% { opacity: .25; } }
 @keyframes character-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-.6%) scale(1.006, 1.012); } }
