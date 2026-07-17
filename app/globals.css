@@ -45,19 +45,17 @@ button { color: inherit; }
 .game-frame { position: relative; max-width: 1500px; aspect-ratio: 16/9; margin: auto; overflow: hidden; border: 4px solid var(--red); background: radial-gradient(circle at 50% 18%, #324d72 0 10%, #121b39 46%, #070b1c 100%); box-shadow: 9px 9px 0 var(--red-dark); isolation: isolate; }
 .scene-label { position: absolute; z-index: 12; top: 16px; left: 18px; padding: 7px 10px; color: var(--paper); background: var(--ink); font: 800 clamp(9px, .8vw, 13px) ui-monospace, monospace; letter-spacing: .14em; }
 .scene-background { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
-.bubble-stage { --bubble-color: #f6efda; position: absolute; z-index: 1; left: 30%; top: 2%; width: 40%; height: 34%; overflow: hidden; }
-.bubble-wanderer { position: absolute; left: 7%; top: 15%; width: clamp(70px, 8.5vw, 138px); aspect-ratio: 1; will-change: left, top, transform; animation: bubble-wander 34s cubic-bezier(.45, .05, .55, .95) infinite alternate; }
-.void-bubble { width: 100%; height: 100%; padding: 0; border: 0; background: transparent; cursor: pointer; transition: transform .9s cubic-bezier(.22, .72, .3, 1); }
-.void-bubble-core { position: relative; display: block; width: 78%; height: 78%; margin: 11%; border-radius: 48% 52% 61% 39% / 44% 38% 62% 56%; background: var(--bubble-color); transition: transform .5s ease; animation: bubble-morph 10.5s ease-in-out infinite alternate; }
-.void-bubble-core:before, .void-bubble-core:after, .void-bubble-core i, .void-bubble-core b, .void-bubble-core em { content: ""; position: absolute; display: block; border-radius: 50%; background: var(--bubble-color); }
-.void-bubble-core:before { left: 6%; top: 4%; width: 52%; aspect-ratio: 1; animation: bubble-split-one 18s ease-in-out infinite; }
-.void-bubble-core:after { right: 1%; bottom: 3%; width: 43%; aspect-ratio: 1; animation: bubble-split-two 20s 1.8s ease-in-out infinite; }
-.void-bubble-core i { left: 20%; bottom: 2%; width: 31%; aspect-ratio: 1; animation: bubble-split-three 16s 3.2s ease-in-out infinite; }
-.void-bubble-core b { right: 11%; top: 12%; width: 22%; aspect-ratio: 1; animation: bubble-split-four 22s .8s ease-in-out infinite; }
-.void-bubble-core em { left: 39%; top: 34%; width: 38%; aspect-ratio: 1; animation: bubble-bridge 12s ease-in-out infinite alternate; }
-.void-bubble:hover .void-bubble-core { opacity: .9; }
-.void-bubble:active .void-bubble-core { transform: scale(.91, 1.07); }
-.void-bubble:focus-visible { outline: 3px solid var(--gold); outline-offset: 9px; border-radius: 48%; }
+.cube-stage { --cube-size: clamp(72px, 8vw, 132px); --cube-half: clamp(36px, 4vw, 66px); position: absolute; z-index: 1; left: 30%; top: 2%; width: 40%; height: 34%; display: grid; place-items: center; perspective: 700px; overflow: hidden; }
+.cube-float { position: relative; width: var(--cube-size); height: var(--cube-size); display: grid; place-items: center; transform-style: preserve-3d; animation: cube-drift 8s ease-in-out infinite; }
+.cube-float:after { content: ""; position: absolute; left: 13%; right: 13%; bottom: -34%; height: 17%; border-radius: 50%; background: rgba(246,239,218,.18); filter: blur(7px); transform: rotateX(68deg); }
+.void-cube { position: relative; width: var(--cube-size); height: var(--cube-size); transform-style: preserve-3d; animation: cube-turn 38s cubic-bezier(.42, .05, .58, .95) infinite; }
+.cube-face { position: absolute; inset: 0; border: 2px solid rgba(246,239,218,.72); background: rgba(246,239,218,.86); backface-visibility: visible; }
+.cube-face--front { transform: translateZ(var(--cube-half)); }
+.cube-face--back { opacity: .58; transform: rotateY(180deg) translateZ(var(--cube-half)); }
+.cube-face--right { opacity: .74; transform: rotateY(90deg) translateZ(var(--cube-half)); }
+.cube-face--left { opacity: .68; transform: rotateY(-90deg) translateZ(var(--cube-half)); }
+.cube-face--top { opacity: .94; transform: rotateX(90deg) translateZ(var(--cube-half)); }
+.cube-face--bottom { opacity: .52; transform: rotateX(-90deg) translateZ(var(--cube-half)); }
 .hotspot { position: absolute; z-index: 8; border: 0; background: transparent; cursor: pointer; }.hotspot em { opacity: 0; position: absolute; font: 900 10px ui-monospace, monospace; letter-spacing: .1em; color: var(--paper); background: var(--red); padding: 5px 7px; transition: .2s; font-style: normal; white-space: nowrap; }.hotspot:hover em, .hotspot:focus-visible em { opacity: 1; transform: translateY(-5px); }.hotspot:focus-visible { outline: 3px solid var(--gold); outline-offset: 5px; }
 .bell { left: 38%; top: 48%; width: 8%; aspect-ratio: 1.2; }.bell-dome { position: absolute; left: 15%; right: 15%; bottom: 27%; height: 48%; border: 4px solid var(--ink); border-radius: 60% 60% 10% 10%; background: var(--gold); }.bell-dome:before { content: ""; position: absolute; width: 18%; aspect-ratio: 1; border-radius: 50%; background: var(--ink); left: 41%; top: -20%; }.bell-base { position: absolute; left: 5%; right: 5%; bottom: 18%; height: 12%; border: 4px solid var(--ink); background: var(--gold); }.bell em { left: 28%; top: -12%; }
 .menu-object { left: 47%; top: 52%; width: 12%; height: 13%; transform: rotate(2deg); border: 4px solid var(--ink); background: var(--paper); box-shadow: 5px 5px 0 var(--red); }.menu-object span { color: var(--red); font: 900 clamp(12px, 1.4vw, 24px) Georgia, serif; }.menu-object em { left: 34%; top: -35%; }
@@ -96,38 +94,27 @@ button { color: inherit; }
 @keyframes character-breathe { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-.6%) scale(1.006, 1.012); } }
 @keyframes character-head-reaction { 0%, 100% { transform: translateY(0) rotate(0); } 42% { transform: translateY(1.2%) rotate(-1.4deg) scale(.995, 1.008); } }
 @keyframes character-chest-reaction { 0%, 100% { transform: translateX(0) scale(1); } 38% { transform: translateX(-1.4%) scale(.992, 1.008); } 68% { transform: translateX(.5%) scale(1.002, .998); } }
-@keyframes bubble-morph {
-  0% { border-radius: 48% 52% 61% 39% / 44% 38% 62% 56%; }
-  35% { border-radius: 61% 39% 46% 54% / 55% 63% 37% 45%; }
-  68% { border-radius: 39% 61% 55% 45% / 64% 43% 57% 36%; }
-  100% { border-radius: 54% 46% 37% 63% / 38% 57% 43% 62%; }
+@keyframes cube-turn {
+  0% { transform: rotateX(-18deg) rotateY(0deg) rotateZ(2deg); }
+  22% { transform: rotateX(38deg) rotateY(78deg) rotateZ(-9deg); }
+  46% { transform: rotateX(-43deg) rotateY(167deg) rotateZ(15deg); }
+  71% { transform: rotateX(61deg) rotateY(259deg) rotateZ(-17deg); }
+  100% { transform: rotateX(-18deg) rotateY(360deg) rotateZ(2deg); }
 }
-@keyframes bubble-wander {
-  0% { left: 3%; top: 11%; transform: rotate(-8deg); }
-  18% { left: 66%; top: 4%; transform: rotate(7deg); }
-  38% { left: 46%; top: 54%; transform: rotate(-4deg); }
-  58% { left: 8%; top: 57%; transform: rotate(10deg); }
-  79% { left: 68%; top: 32%; transform: rotate(-9deg); }
-  100% { left: 27%; top: 7%; transform: rotate(5deg); }
-}
-@keyframes bubble-split-one { 0%, 16%, 100% { transform: translate(0, 0) scale(.95); } 38%, 54% { transform: translate(-95%, -42%) scale(.62); } 72% { transform: translate(-18%, 28%) scale(1.08); } }
-@keyframes bubble-split-two { 0%, 22%, 100% { transform: translate(0, 0) scale(1); } 43%, 60% { transform: translate(108%, 38%) scale(.55); } 78% { transform: translate(13%, -22%) scale(1.12); } }
-@keyframes bubble-split-three { 0%, 28%, 100% { transform: translate(0, 0) scale(.9); } 49%, 66% { transform: translate(-38%, 122%) scale(.5); } 82% { transform: translate(28%, 8%) scale(1.05); } }
-@keyframes bubble-split-four { 0%, 18%, 100% { transform: translate(0, 0) scale(1); } 36%, 52% { transform: translate(68%, -102%) scale(.58); } 73% { transform: translate(-24%, 12%) scale(1.15); } }
-@keyframes bubble-bridge { from { transform: translate(-22%, 8%) scale(.78, 1.16); } to { transform: translate(24%, -12%) scale(1.14, .72); } }
+@keyframes cube-drift { 0%, 100% { transform: translateY(-7%) translateX(-2%); } 50% { transform: translateY(8%) translateX(3%); } }
 @keyframes dimmer-in { from { opacity: 0; } }
 @keyframes panel-in { from { opacity: 0; transform: translateY(30px) scale(.96); } }
 
 @media (prefers-reduced-motion: reduce) {
   .loading-screen--exiting { animation-duration: .01ms; }
-  .bubble-wanderer, .void-bubble-core, .void-bubble-core:before, .void-bubble-core:after, .void-bubble-core i, .void-bubble-core b, .void-bubble-core em { animation-play-state: paused; }
+  .cube-float, .void-cube { animation-play-state: paused; }
 }
 
 @media (max-width: 800px) {
   .site-shell { padding: 12px 8px 22px; }
   .open-sign small { display: none; }
   .game-frame { min-height: 67svh; aspect-ratio: auto; }
-  .bubble-stage { left: 22%; top: 1%; width: 56%; height: 35%; }
+  .cube-stage { left: 22%; top: 1%; width: 56%; height: 35%; }
   .diner-window { left: 13%; width: 58%; height: 30%; }
   .picture { right: 3%; width: 23%; height: 23%; }
   .table { left: 8%; top: 48%; width: 72%; height: 17%; }
@@ -145,7 +132,7 @@ button { color: inherit; }
   .loading-screen { padding: 15px; }.loading-card { padding: 70px 18px 30px; }.loading-footer { font-size: 8px; }
   .topbar { align-items: center; }.open-sign { font-size: 9px; }
   .game-frame { min-height: 650px; }
-  .bubble-stage { left: 5%; top: 1%; width: 90%; height: 36%; }
+  .cube-stage { left: 5%; top: 1%; width: 90%; height: 36%; }
   .scene-label { top: 9px; left: 9px; }
   .booth { top: 27%; height: 38%; width: 40%; }.booth--left { left: -18%; }.booth--right { right: -16%; }
   .diner-window { left: 8%; width: 66%; height: 27%; }

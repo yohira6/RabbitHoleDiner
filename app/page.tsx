@@ -63,7 +63,6 @@ export default function Home() {
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
   const [characterReaction, setCharacterReaction] = useState<"head" | "chest" | null>(null);
-  const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0, rotate: 0 });
   const isTyping = loaded && typed.length < line.length;
 
   useEffect(() => {
@@ -172,15 +171,6 @@ export default function Home() {
     setLoadingExiting(true);
   };
 
-  const pokeBubble = () => {
-    setBubblePosition((current) => ({
-      x: Math.max(-34, Math.min(34, current.x + (Math.random() * 28 - 14))),
-      y: Math.max(-22, Math.min(22, current.y + (Math.random() * 20 - 10))),
-      rotate: current.rotate + (Math.random() * 24 - 12),
-    }));
-    setLine("ぷるん……窓の向こうで、少しだけ逃げたみたい。もう一度つついてみる？");
-  };
-
   return (
     <>
       {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} />}
@@ -194,17 +184,16 @@ export default function Home() {
 
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
-        <div className="bubble-stage">
-          <div className="bubble-wanderer">
-            <button
-              className="void-bubble"
-              type="button"
-              onClick={pokeBubble}
-              aria-label="窓の中を移動する泡をつつく"
-              style={{ transform: `translate(${bubblePosition.x}%, ${bubblePosition.y}%) rotate(${bubblePosition.rotate}deg)` }}
-            >
-              <span className="void-bubble-core"><i /><b /><em /></span>
-            </button>
+        <div className="cube-stage" aria-hidden="true">
+          <div className="cube-float">
+            <div className="void-cube">
+              <span className="cube-face cube-face--front" />
+              <span className="cube-face cube-face--back" />
+              <span className="cube-face cube-face--right" />
+              <span className="cube-face cube-face--left" />
+              <span className="cube-face cube-face--top" />
+              <span className="cube-face cube-face--bottom" />
+            </div>
           </div>
         </div>
         <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
