@@ -195,15 +195,17 @@ export default function Home() {
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
         <div className="bubble-stage">
-          <button
-            className="void-bubble"
-            type="button"
-            onClick={pokeBubble}
-            aria-label="窓の向こうの泡をつつく"
-            style={{ transform: `translate(${bubblePosition.x}%, ${bubblePosition.y}%) rotate(${bubblePosition.rotate}deg)` }}
-          >
-            <span className="void-bubble-core"><i /><b /></span>
-          </button>
+          <div className="bubble-wanderer">
+            <button
+              className="void-bubble"
+              type="button"
+              onClick={pokeBubble}
+              aria-label="窓の中を移動する泡をつつく"
+              style={{ transform: `translate(${bubblePosition.x}%, ${bubblePosition.y}%) rotate(${bubblePosition.rotate}deg)` }}
+            >
+              <span className="void-bubble-core"><i /><b /><em /></span>
+            </button>
+          </div>
         </div>
         <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
 
