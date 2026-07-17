@@ -17,11 +17,24 @@ const works = [
   { tag: "ILLUSTRATION", title: "Rabbit Hole Sketches", note: "ダイナーの設定画集" },
 ];
 
-const pcLinks = [
-  { id: "sns", label: "SNS", detail: "SOCIAL", glyph: "@", href: "" },
-  { id: "youtube", label: "YouTube", detail: "MOVIE", glyph: "▶", href: "" },
-  { id: "illustration", label: "ILLUST", detail: "GALLERY", glyph: "P", href: "" },
-  { id: "mail", label: "MAIL", detail: "CONTACT", glyph: "✉", href: "" },
+type PcLink = {
+  id: string;
+  label: string;
+  detail: string;
+  glyph: string;
+  href: string;
+  adult?: boolean;
+  status?: string;
+};
+
+const pcLinks: PcLink[] = [
+  { id: "youtube", label: "YouTube", detail: "VIDEO", glyph: "▶", href: "https://www.youtube.com/@RabbitPunch_678" },
+  { id: "niconico", label: "niconico", detail: "VIDEO", glyph: "N", href: "https://www.nicovideo.jp/user/89488699" },
+  { id: "x", label: "X", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art" },
+  { id: "x-r18", label: "X / R18", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art_R18", adult: true },
+  { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265" },
+  { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/", status: "準備中" },
+  { id: "booth", label: "BOOTH", detail: "STORE", glyph: "B", href: "https://yohira6.booth.pm/" },
 ];
 
 const ambientDialogue = [
@@ -97,6 +110,7 @@ export default function Home() {
   const [characterReactionRun, setCharacterReactionRun] = useState(0);
   const [dialogueRun, setDialogueRun] = useState(0);
   const [forcedHalfLine, setForcedHalfLine] = useState<string | null>(null);
+  const [pendingPcLink, setPendingPcLink] = useState<PcLink | null>(null);
   const isTypingRef = useRef(false);
   const isTyping = loaded && typed.length < line.length;
   const displayedEyeFrame = forcedHalfLine ? "half" : eyeFrame;
@@ -226,6 +240,7 @@ export default function Home() {
 
   const openScene = (next: Scene) => {
     setForcedHalfLine(null);
+    setPendingPcLink(null);
     setScene(next);
     setLine(dialogue[next]);
   };
@@ -247,15 +262,17 @@ export default function Home() {
     setLine(nextLine);
   };
 
-  const openPcLink = (link: (typeof pcLinks)[number]) => {
-    if (link.href) {
-      window.open(link.href, "_blank", "noopener,noreferrer");
-      return;
-    }
-
+  const openPcLink = (link: PcLink) => {
+    setPendingPcLink(link);
     setTyped("");
     setDialogueRun((current) => current + 1);
-    setLine(`${link.label}のリンク先は、いま準備中みたい。URLをもらったら接続するね。`);
+    setLine(`${link.label}は外部サイトにつながっているよ。移動しても大丈夫なら、確認ボタンを押してね。`);
+  };
+
+  const confirmPcLink = () => {
+    if (!pendingPcLink) return;
+    window.open(pendingPcLink.href, "_blank", "noopener,noreferrer");
+    setPendingPcLink(null);
   };
 
   const enterDiner = () => {
@@ -387,20 +404,36 @@ export default function Home() {
                   <span className="pc-title-status">ONLINE</span>
                 </div>
                 <div className="pc-desktop">
-                  <div className="pc-wallpaper" aria-hidden="true">
-                    <small>WELCOME TO</small>
-                    <strong>RABBIT<br />NETWORK</strong>
-                    <span>SELECT AN ICON</span>
-                  </div>
                   <div className="pc-icon-grid" aria-label="外部リンク">
                     {pcLinks.map((link) => (
-                      <button type="button" className="pc-icon" key={link.id} onClick={() => openPcLink(link)}>
+                      <button type="button" className={`pc-icon ${link.adult ? "pc-icon--adult" : ""}`} key={link.id} onClick={() => openPcLink(link)}>
                         <span className={`pc-icon-picture pc-icon-picture--${link.id}`} aria-hidden="true">{link.glyph}</span>
                         <strong>{link.label}</strong>
                         <small>{link.detail}</small>
+                        {link.status && <span className="pc-icon-badge">{link.status}</span>}
+                        {link.adult && <span className="pc-icon-badge pc-icon-badge--adult">18+</span>}
                       </button>
                     ))}
                   </div>
+                  {pendingPcLink && (
+                    <div className="pc-confirm-screen">
+                      <section className={`pc-confirm ${pendingPcLink.adult ? "pc-confirm--adult" : ""}`} role="dialog" aria-modal="true" aria-labelledby="pc-confirm-title">
+                        <p className="pc-confirm-kicker">EXTERNAL LINK</p>
+                        <h3 id="pc-confirm-title">{pendingPcLink.label}</h3>
+                        <p>これからRabbitHole Dinerを離れて、外部サイトへ移動します。開いても大丈夫？</p>
+                        {pendingPcLink.adult && (
+                          <div className="pc-adult-warning">
+                            <strong>18+ / 成人向けコンテンツ</strong>
+                            <p>リンク先には成人向けの内容が含まれます。18歳未満の方は移動しないでください。</p>
+                          </div>
+                        )}
+                        <div className="pc-confirm-actions">
+                          <button type="button" onClick={() => setPendingPcLink(null)}>戻る</button>
+                          <button type="button" className="pc-confirm-open" onClick={confirmPcLink}>{pendingPcLink.adult ? "18歳以上として移動" : "外部サイトへ移動"} ↗</button>
+                        </div>
+                      </section>
+                    </div>
+                  )}
                 </div>
                 <div className="pc-taskbar">
                   <span className="pc-start">RHD</span>
