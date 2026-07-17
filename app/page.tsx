@@ -32,7 +32,7 @@ const pcLinks: PcLink[] = [
   { id: "niconico", label: "niconico", detail: "VIDEO", glyph: "N", href: "https://www.nicovideo.jp/user/89488699" },
   { id: "x", label: "X", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art" },
   { id: "x-r18", label: "X / R18", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art_R18", adult: true },
-  { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265" },
+  { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265", adult: true },
   { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/", status: "準備中" },
   { id: "booth", label: "BOOTH", detail: "STORE", glyph: "B", href: "https://yohira6.booth.pm/" },
 ];
