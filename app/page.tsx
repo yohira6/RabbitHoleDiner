@@ -63,6 +63,7 @@ export default function Home() {
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
   const [characterReaction, setCharacterReaction] = useState<"head" | "chest" | null>(null);
+  const [bubblePosition, setBubblePosition] = useState({ x: 0, y: 0, rotate: 0 });
   const isTyping = loaded && typed.length < line.length;
 
   useEffect(() => {
@@ -171,6 +172,15 @@ export default function Home() {
     setLoadingExiting(true);
   };
 
+  const pokeBubble = () => {
+    setBubblePosition((current) => ({
+      x: Math.max(-34, Math.min(34, current.x + (Math.random() * 28 - 14))),
+      y: Math.max(-22, Math.min(22, current.y + (Math.random() * 20 - 10))),
+      rotate: current.rotate + (Math.random() * 24 - 12),
+    }));
+    setLine("ぷるん……窓の向こうで、少しだけ逃げたみたい。もう一度つついてみる？");
+  };
+
   return (
     <>
       {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} />}
@@ -184,22 +194,22 @@ export default function Home() {
 
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
-        <div className="diner-window" aria-hidden="true">
-          <span className="moon" />
-          <span className="star star--one">✦</span>
-          <span className="star star--two">·</span>
-          <div className="window-copy">WELCOME<br />TO THE<br />RABBIT HOLE</div>
+        <div className="bubble-stage">
+          <button
+            className="void-bubble"
+            type="button"
+            onClick={pokeBubble}
+            aria-label="窓の向こうの泡をつつく"
+            style={{ transform: `translate(${bubblePosition.x}%, ${bubblePosition.y}%) rotate(${bubblePosition.rotate}deg)` }}
+          >
+            <span className="void-bubble-core"><i /><b /></span>
+          </button>
         </div>
-
-        <div className="booth booth--left" aria-hidden="true"><i /><i /><i /></div>
-        <div className="booth booth--right" aria-hidden="true"><i /><i /><i /></div>
-        <div className="floor" aria-hidden="true" />
+        <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
 
         <button className="hotspot bell" onClick={() => setLine("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
           <span className="bell-dome" /><span className="bell-base" /><em>RING</em>
         </button>
-
-        <div className="table" aria-hidden="true"><span /></div>
 
         <button className="hotspot menu-object" onClick={() => openScene("menu")} aria-label="メニューブックを開く">
           <span>MENU</span><em>OPEN</em>
