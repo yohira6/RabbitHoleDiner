@@ -445,6 +445,7 @@ export default function Home() {
         </button>
 
         <button className="hotspot menu-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
+          <span className="object-status">準備中</span>
           <em>OPEN</em>
         </button>
 
@@ -453,6 +454,7 @@ export default function Home() {
         </button>
 
         <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
+          <span className="object-status">準備中</span>
           <em>ABOUT</em>
         </button>
 
@@ -488,28 +490,32 @@ export default function Home() {
           <section className={`overlay-panel overlay-panel--${scene}`} aria-label={sceneTitle}>
             <button className="panel-close" onClick={() => openScene("home")} aria-label="閉じる">×</button>
             {scene === "menu" && (
-              <div className="book">
-                <div className="book-page">
-                  <p className="book-kicker">TONIGHT&apos;S SPECIALS</p>
-                  <h2>MENU</h2>
-                  {works.slice(0, 2).map((work, index) => (
-                    <button type="button" onClick={() => setLine(`${work.title}。${work.note}だよ。`)} className="work-link" key={work.title}>
-                      <small>0{index + 1} / {work.tag}</small><strong>{work.title}</strong><span>{work.note}</span>
+              <div className="panel-content-with-notice">
+                <div className="preparing-banner preparing-banner--floating"><strong>準備中</strong><span>作品とメニューを整理しています</span></div>
+                <div className="book">
+                  <div className="book-page">
+                    <p className="book-kicker">TONIGHT&apos;S SPECIALS</p>
+                    <h2>MENU</h2>
+                    {works.slice(0, 2).map((work, index) => (
+                      <button type="button" onClick={() => setLine(`${work.title}。${work.note}だよ。`)} className="work-link" key={work.title}>
+                        <small>0{index + 1} / {work.tag}</small><strong>{work.title}</strong><span>{work.note}</span>
+                      </button>
+                    ))}
+                  </div>
+                  <div className="book-page">
+                    <p className="book-kicker">DESSERT &amp; ART</p>
+                    <h2>GALLERY</h2>
+                    <button type="button" onClick={() => setLine(`${works[2].title}。${works[2].note}だよ。`)} className="work-link">
+                      <small>03 / {works[2].tag}</small><strong>{works[2].title}</strong><span>{works[2].note}</span>
                     </button>
-                  ))}
-                </div>
-                <div className="book-page">
-                  <p className="book-kicker">DESSERT &amp; ART</p>
-                  <h2>GALLERY</h2>
-                  <button type="button" onClick={() => setLine(`${works[2].title}。${works[2].note}だよ。`)} className="work-link">
-                    <small>03 / {works[2].tag}</small><strong>{works[2].title}</strong><span>{works[2].note}</span>
-                  </button>
-                  <div className="menu-note">NEW ITEMS<br />COMING SOON…</div>
+                    <div className="menu-note">NEW ITEMS<br />COMING SOON…</div>
+                  </div>
                 </div>
               </div>
             )}
             {scene === "about" && (
               <div className="info-card">
+                <div className="preparing-banner"><strong>準備中</strong><span>絵と紹介内容を整理しています</span></div>
                 <p className="book-kicker">ABOUT THIS PLACE</p><h2>夜だけ開く、作品置き場。</h2>
                 <p>イラスト、ゲーム、Web作品などを並べるための個人サイトです。店内のものに触れながら、少しずつページを巡れます。</p>
                 <dl><div><dt>OWNER</dt><dd>Your Name</dd></div><div><dt>STATUS</dt><dd>OPEN / WORK IN PROGRESS</dd></div></dl>
