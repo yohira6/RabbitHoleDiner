@@ -26,9 +26,23 @@ const ambientDialogue = [
   "メニューにないものでも、話くらいなら聞けるよ。",
 ];
 
-const characterDialogue = {
-  head: "……帽子、ずれてた？　触るなら、やさしくしてね。",
-  chest: "そこは注文ボタンじゃないよ……メニューなら、テーブルの上。",
+const characterDialogue: Record<"head" | "chest", string[]> = {
+  head: [
+    "……帽子、ずれてた？　触るなら、やさしくしてね。",
+    "頭を撫でても、裏メニューは出てこないよ……。",
+    "髪、気になる？　今朝ちゃんと整えたつもりなんだけど。",
+    "……くすぐったい。あまり何度も触らないでね。",
+    "この帽子は制服の一部。持っていっちゃだめだよ。",
+    "ふふ……そんなに気に入ったなら、もう少しだけね。",
+  ],
+  chest: [
+    "そこは注文ボタンじゃないよ……メニューなら、テーブルの上。",
+    "……近い。用があるなら、普通に呼んでくれればいいのに。",
+    "ちょっと……そこを呼び鈴みたいに押さないで。",
+    "何度触っても、追加注文は受け付けないからね……。",
+    "……接客中なんだけど。少しは遠慮してほしいかも。",
+    "呼び鈴と間違えるには、ずいぶん無理があると思う……。",
+  ],
 };
 
 type LoadingScreenProps = {
@@ -73,6 +87,8 @@ export default function Home() {
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
   const [characterReaction, setCharacterReaction] = useState<"head" | "chest" | null>(null);
+  const [characterReactionRun, setCharacterReactionRun] = useState(0);
+  const [dialogueRun, setDialogueRun] = useState(0);
   const [forcedHalfLine, setForcedHalfLine] = useState<string | null>(null);
   const isTypingRef = useRef(false);
   const isTyping = loaded && typed.length < line.length;
@@ -109,7 +125,7 @@ export default function Home() {
       if (index >= line.length) window.clearInterval(timer);
     }, 42);
     return () => window.clearInterval(timer);
-  }, [line, loaded]);
+  }, [line, loaded, dialogueRun]);
 
   useEffect(() => {
     const timers: number[] = [];
@@ -194,7 +210,7 @@ export default function Home() {
     if (!characterReaction) return;
     const timer = window.setTimeout(() => setCharacterReaction(null), 520);
     return () => window.clearTimeout(timer);
-  }, [characterReaction]);
+  }, [characterReaction, characterReactionRun]);
 
   const sceneTitle = useMemo(
     () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "LINKS" })[scene],
@@ -212,7 +228,13 @@ export default function Home() {
   };
 
   const reactToCharacter = (target: "head" | "chest") => {
-    const nextLine = characterDialogue[target];
+    const lines = characterDialogue[target];
+    const candidates = lines.filter((candidate) => candidate !== line);
+    const pool = candidates.length > 0 ? candidates : lines;
+    const nextLine = pool[Math.floor(Math.random() * pool.length)];
+    setTyped("");
+    setDialogueRun((current) => current + 1);
+    setCharacterReactionRun((current) => current + 1);
     setCharacterReaction(target);
     setForcedHalfLine(target === "chest" ? nextLine : null);
     setLine(nextLine);
@@ -284,7 +306,7 @@ export default function Home() {
 
         <aside className={`character ${scene !== "home" ? "character--overlay" : ""} ${characterReaction ? `character--reaction-${characterReaction}` : ""}`} aria-label="案内役のキャラクター">
           <div className="character-shadow" />
-          <div className="character-art" aria-hidden="true">
+          <div className="character-art" aria-hidden="true" key={characterReactionRun}>
             <img className="character-base" src="/character/base.png" alt="" />
             {(["open", "half", "closed"] as const).map((frame) => (
               <img
