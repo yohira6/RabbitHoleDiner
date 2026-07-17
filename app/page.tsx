@@ -141,7 +141,7 @@ export default function Home() {
   const [forcedHalfLine, setForcedHalfLine] = useState<string | null>(null);
   const [pendingPcLink, setPendingPcLink] = useState<PcLink | null>(null);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [soundVolume, setSoundVolume] = useState(35);
+  const [soundVolume, setSoundVolume] = useState(50);
   const bgmRef = useRef<HTMLAudioElement>(null);
   const bellAudioRef = useRef<HTMLAudioElement>(null);
   const bgmFadeRef = useRef<number | null>(null);
