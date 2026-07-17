@@ -41,9 +41,7 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
   return (
     <main className={`loading-screen ${exiting ? "loading-screen--exiting" : ""}`}>
       <header className="brand brand--loading">
-        <span>RabbitHole</span>
-        <span>Diner</span>
-        <span className="brand-rabbit" aria-hidden="true">♧</span>
+        <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
       </header>
       <section className="loading-card" aria-live="polite">
         <div className="loading-rabbit" aria-hidden="true">
@@ -234,7 +232,7 @@ export default function Home() {
       {loaded && <main className="site-shell">
       <header className="topbar">
         <button className="brand brand--button" onClick={() => openScene("home")} aria-label="ホームへ戻る">
-          <span>RabbitHole</span><span>Diner</span><span aria-hidden="true">♧</span>
+          <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
         </button>
         <div className="open-sign"><span /> OPEN <small>00:00—05:00</small></div>
       </header>
@@ -263,9 +261,9 @@ export default function Home() {
           </button>
         </div>
         <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art" src="/objects/ring.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art" src="/objects/menu.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art" src="/objects/pc.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--ring" src="/objects/ring.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--menu" src="/objects/menu.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--pc" src="/objects/pc.png" alt="" aria-hidden="true" />
 
         <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
           <em>RING</em>
