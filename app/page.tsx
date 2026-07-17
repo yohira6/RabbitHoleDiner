@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type Scene = "home" | "menu" | "about" | "links";
 
@@ -16,6 +16,20 @@ const works = [
   { tag: "WEB APP", title: "Tiny Recipe Book", note: "小さな献立記録アプリ" },
   { tag: "ILLUSTRATION", title: "Rabbit Hole Sketches", note: "ダイナーの設定画集" },
 ];
+
+const ambientDialogue = [
+  "……静かな夜だね。こういう時間、嫌いじゃないよ。",
+  "窓の向こう、さっきから景色が少しずつ違って見える。",
+  "急がなくていいよ。席はまだ空いてるから。",
+  "今日は何を描いてたの？　あとで少し見せてほしいな。",
+  "店内の音って、ぼんやり聞いていると眠くなるね……。",
+  "メニューにないものでも、話くらいなら聞けるよ。",
+];
+
+const characterDialogue = {
+  head: "……帽子、ずれてた？　触るなら、やさしくしてね。",
+  chest: "そこは注文ボタンじゃないよ……メニューなら、テーブルの上。",
+};
 
 type LoadingScreenProps = {
   progress: number;
@@ -63,7 +77,10 @@ export default function Home() {
   const [eyeFrame, setEyeFrame] = useState<"open" | "half" | "closed">("open");
   const [mouthFrame, setMouthFrame] = useState<"closed" | "half" | "open">("closed");
   const [characterReaction, setCharacterReaction] = useState<"head" | "chest" | null>(null);
+  const [forcedHalfLine, setForcedHalfLine] = useState<string | null>(null);
+  const isTypingRef = useRef(false);
   const isTyping = loaded && typed.length < line.length;
+  const displayedEyeFrame = forcedHalfLine ? "half" : eyeFrame;
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -141,6 +158,43 @@ export default function Home() {
   }, [isTyping]);
 
   useEffect(() => {
+    isTypingRef.current = isTyping;
+  }, [isTyping]);
+
+  useEffect(() => {
+    if (!loaded || scene !== "home") return;
+
+    let cancelled = false;
+    let timer = 0;
+    const scheduleDialogue = () => {
+      if (cancelled) return;
+      const wait = 18000 + Math.random() * 14000;
+      timer = window.setTimeout(() => {
+        if (!isTypingRef.current) {
+          setLine((current) => {
+            const candidates = ambientDialogue.filter((candidate) => candidate !== current);
+            return candidates[Math.floor(Math.random() * candidates.length)] ?? current;
+          });
+        }
+        scheduleDialogue();
+      }, wait);
+    };
+
+    scheduleDialogue();
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
+  }, [loaded, scene]);
+
+  useEffect(() => {
+    if (!forcedHalfLine) return;
+    if (line !== forcedHalfLine || typed === forcedHalfLine) {
+      setForcedHalfLine(null);
+    }
+  }, [forcedHalfLine, line, typed]);
+
+  useEffect(() => {
     if (!characterReaction) return;
     const timer = window.setTimeout(() => setCharacterReaction(null), 520);
     return () => window.clearTimeout(timer);
@@ -152,17 +206,16 @@ export default function Home() {
   );
 
   const openScene = (next: Scene) => {
+    setForcedHalfLine(null);
     setScene(next);
     setLine(dialogue[next]);
   };
 
   const reactToCharacter = (target: "head" | "chest") => {
+    const nextLine = characterDialogue[target];
     setCharacterReaction(target);
-    setLine(
-      target === "head"
-        ? "……帽子、ずれてた？　触るなら、やさしくしてね。"
-        : "そこは注文ボタンじゃないよ……メニューなら、テーブルの上。",
-    );
+    setForcedHalfLine(target === "chest" ? nextLine : null);
+    setLine(nextLine);
   };
 
   const enterDiner = () => {
@@ -232,7 +285,7 @@ export default function Home() {
             {(["open", "half", "closed"] as const).map((frame) => (
               <img
                 key={`eyes-${frame}`}
-                className={`character-layer character-eyes ${eyeFrame === frame ? "is-active" : ""}`}
+                className={`character-layer character-eyes ${displayedEyeFrame === frame ? "is-active" : ""}`}
                 src={`/character/eyes-${frame}.png`}
                 alt=""
               />
