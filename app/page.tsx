@@ -44,7 +44,9 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
         <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
       </header>
       <section className="loading-card" aria-live="polite">
-        <img className="loading-rabbit" src="/branding/rabbit-loading.png" alt="" aria-hidden="true" />
+        <div className="loading-rabbit-badge" aria-hidden="true">
+          <img src="/branding/rabbit-loading.png" alt="" />
+        </div>
         <p className="eyebrow">WELCOME, NIGHT OWL</p>
         <h1>Now Loading…</h1>
         <div className="loading-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
