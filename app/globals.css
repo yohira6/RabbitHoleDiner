@@ -49,7 +49,6 @@ button { color: inherit; }
 .cube-trigger { width: calc(var(--cube-size) * 1.5); height: calc(var(--cube-size) * 1.5); display: grid; place-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; perspective: 700px; }
 .cube-trigger:focus-visible { outline: 3px solid var(--gold); outline-offset: 8px; border-radius: 16%; }
 .cube-float { position: relative; width: var(--cube-size); height: var(--cube-size); display: grid; place-items: center; transform-style: preserve-3d; animation: cube-drift 8s ease-in-out infinite; }
-.cube-float:after { content: ""; position: absolute; left: 13%; right: 13%; bottom: -34%; height: 17%; border-radius: 50%; background: rgba(246,239,218,.18); filter: blur(7px); transform: rotateX(68deg); }
 .void-cube { position: relative; width: var(--cube-size); height: var(--cube-size); transform-style: preserve-3d; animation: cube-turn 38s cubic-bezier(.42, .05, .58, .95) infinite; }
 .cube-face { position: absolute; inset: 0; border: 0; background: #f6efda; backface-visibility: visible; }
 .cube-face--front { transform: translateZ(var(--cube-half)); }
