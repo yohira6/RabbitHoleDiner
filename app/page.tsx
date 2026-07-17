@@ -44,11 +44,7 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
         <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
       </header>
       <section className="loading-card" aria-live="polite">
-        <div className="loading-rabbit" aria-hidden="true">
-          <i className="ear ear--left" />
-          <i className="ear ear--right" />
-          <b>×</b>
-        </div>
+        <img className="loading-rabbit" src="/branding/rabbit-loading.png" alt="" aria-hidden="true" />
         <p className="eyebrow">WELCOME, NIGHT OWL</p>
         <h1>Now Loading…</h1>
         <div className="loading-track" role="progressbar" aria-valuemin={0} aria-valuemax={100} aria-valuenow={progress}>
@@ -264,6 +260,7 @@ export default function Home() {
         <img className="scene-object-art scene-object-art--ring" src="/objects/ring.png" alt="" aria-hidden="true" />
         <img className="scene-object-art scene-object-art--menu" src="/objects/menu.png" alt="" aria-hidden="true" />
         <img className="scene-object-art scene-object-art--pc" src="/objects/pc.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--picture" src="/objects/picture.png" alt="" aria-hidden="true" />
 
         <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
           <em>RING</em>
@@ -278,7 +275,6 @@ export default function Home() {
         </button>
 
         <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
-          <span className="picture-rabbit" aria-hidden="true"><i /><b>×</b></span>
           <em>ABOUT</em>
         </button>
 
