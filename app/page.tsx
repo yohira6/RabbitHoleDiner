@@ -263,17 +263,20 @@ export default function Home() {
           </button>
         </div>
         <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art" src="/objects/ring.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art" src="/objects/menu.png" alt="" aria-hidden="true" />
+        <img className="scene-object-art" src="/objects/pc.png" alt="" aria-hidden="true" />
 
         <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
-          <span className="bell-dome" /><span className="bell-base" /><em>RING</em>
+          <em>RING</em>
         </button>
 
         <button className="hotspot menu-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
-          <span>MENU</span><em>OPEN</em>
+          <em>OPEN</em>
         </button>
 
-        <button className="hotspot phone" disabled={scene !== "home"} onMouseEnter={() => reactToObject("古い電話機。受話器の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="電話からリンクを見る">
-          <span className="receiver" /><span className="dial">•••<br />•••</span><em>CALL</em>
+        <button className="hotspot pc-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さなノートPC。画面の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="パソコンからリンクを見る">
+          <em>OPEN</em>
         </button>
 
         <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
