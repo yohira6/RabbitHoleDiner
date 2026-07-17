@@ -8,13 +8,20 @@ const dialogue: Record<Scene, string> = {
   home: "いらっしゃいませ。気になるものを、ゆっくり見ていってね。",
   menu: "今日のメニューだよ。作品名を押すと、そのページへ案内するね。",
   about: "ここは、絵と小さな作品を置いている夜更かしダイナーです。",
-  links: "電話帳には、外の世界へつながるリンクをまとめてあるよ。",
+  links: "パソコンを起動したよ。アイコンから、店の外へ出られるようにしておくね。",
 };
 
 const works = [
   { tag: "PC SOFTWARE", title: "Midnight Order", note: "短編ノベルゲーム / 制作中" },
   { tag: "WEB APP", title: "Tiny Recipe Book", note: "小さな献立記録アプリ" },
   { tag: "ILLUSTRATION", title: "Rabbit Hole Sketches", note: "ダイナーの設定画集" },
+];
+
+const pcLinks = [
+  { id: "sns", label: "SNS", detail: "SOCIAL", glyph: "@", href: "" },
+  { id: "youtube", label: "YouTube", detail: "MOVIE", glyph: "▶", href: "" },
+  { id: "illustration", label: "ILLUST", detail: "GALLERY", glyph: "P", href: "" },
+  { id: "mail", label: "MAIL", detail: "CONTACT", glyph: "✉", href: "" },
 ];
 
 const ambientDialogue = [
@@ -213,7 +220,7 @@ export default function Home() {
   }, [characterReaction, characterReactionRun]);
 
   const sceneTitle = useMemo(
-    () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "LINKS" })[scene],
+    () => ({ home: "DINER", menu: "MENU BOOK", about: "ABOUT", links: "DESKTOP" })[scene],
     [scene],
   );
 
@@ -238,6 +245,17 @@ export default function Home() {
     setCharacterReaction(target);
     setForcedHalfLine(target === "chest" ? nextLine : null);
     setLine(nextLine);
+  };
+
+  const openPcLink = (link: (typeof pcLinks)[number]) => {
+    if (link.href) {
+      window.open(link.href, "_blank", "noopener,noreferrer");
+      return;
+    }
+
+    setTyped("");
+    setDialogueRun((current) => current + 1);
+    setLine(`${link.label}のリンク先は、いま準備中みたい。URLをもらったら接続するね。`);
   };
 
   const enterDiner = () => {
@@ -362,11 +380,33 @@ export default function Home() {
               </div>
             )}
             {scene === "links" && (
-              <div className="info-card links-card">
-                <p className="book-kicker">OUTSIDE LINE</p><h2>どこへ電話する？</h2>
-                <button type="button" onClick={() => setLine("イラストを置いている場所につなぐね。")}>ILLUSTRATION SNS <span>→</span></button>
-                <button type="button" onClick={() => setLine("制作記録のページにつなぐね。")}>DEV LOG <span>→</span></button>
-                <a href="mailto:hello@example.com">MAIL <span>→</span></a>
+              <div className="pc-window">
+                <div className="pc-titlebar">
+                  <span className="pc-window-controls" aria-hidden="true"><i /><i /><i /></span>
+                  <strong>RHD://OUTSIDE-LINE</strong>
+                  <span className="pc-title-status">ONLINE</span>
+                </div>
+                <div className="pc-desktop">
+                  <div className="pc-wallpaper" aria-hidden="true">
+                    <small>WELCOME TO</small>
+                    <strong>RABBIT<br />NETWORK</strong>
+                    <span>SELECT AN ICON</span>
+                  </div>
+                  <div className="pc-icon-grid" aria-label="外部リンク">
+                    {pcLinks.map((link) => (
+                      <button type="button" className="pc-icon" key={link.id} onClick={() => openPcLink(link)}>
+                        <span className={`pc-icon-picture pc-icon-picture--${link.id}`} aria-hidden="true">{link.glyph}</span>
+                        <strong>{link.label}</strong>
+                        <small>{link.detail}</small>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="pc-taskbar">
+                  <span className="pc-start">RHD</span>
+                  <span className="pc-connection"><i /> NETWORK CONNECTED</span>
+                  <time>00:07</time>
+                </div>
               </div>
             )}
           </section>
