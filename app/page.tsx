@@ -69,9 +69,36 @@ type LoadingScreenProps = {
   progress: number;
   exiting?: boolean;
   onEnter: () => void;
+  soundEnabled: boolean;
+  soundVolume: number;
+  onToggleSound: () => void;
+  onVolumeChange: (value: number) => void;
 };
 
-function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProps) {
+type SoundControlsProps = {
+  enabled: boolean;
+  volume: number;
+  onToggle: () => void;
+  onVolumeChange: (value: number) => void;
+  compact?: boolean;
+};
+
+function SoundControls({ enabled, volume, onToggle, onVolumeChange, compact = false }: SoundControlsProps) {
+  return (
+    <div className={`sound-controls ${compact ? "sound-controls--compact" : ""}`} aria-label="音声設定">
+      <button type="button" className="sound-toggle" aria-pressed={enabled} onClick={onToggle}>
+        <span aria-hidden="true">{enabled ? "♪" : "×"}</span>{enabled ? "SOUND ON" : "SOUND OFF"}
+      </button>
+      <label className="volume-control">
+        <span>VOLUME</span>
+        <input type="range" min="0" max="100" step="1" value={volume} onChange={(event) => onVolumeChange(Number(event.target.value))} aria-label="音量" />
+        <output>{volume.toString().padStart(2, "0")}</output>
+      </label>
+    </div>
+  );
+}
+
+function LoadingScreen({ progress, exiting = false, onEnter, soundEnabled, soundVolume, onToggleSound, onVolumeChange }: LoadingScreenProps) {
   return (
     <main className={`loading-screen ${exiting ? "loading-screen--exiting" : ""}`}>
       <header className="brand brand--loading">
@@ -87,6 +114,8 @@ function LoadingScreen({ progress, exiting = false, onEnter }: LoadingScreenProp
           <span style={{ width: `${progress}%` }} />
         </div>
         <p className="loading-count">{progress.toString().padStart(3, "0")}%</p>
+        <p className="audio-notice"><strong>♪ AUDIO NOTICE</strong> このサイトではBGMと効果音が流れます。入店前に音量を調整できます。</p>
+        <SoundControls enabled={soundEnabled} volume={soundVolume} onToggle={onToggleSound} onVolumeChange={onVolumeChange} />
         <button className="enter-button" type="button" disabled={progress < 100 || exiting} onClick={onEnter}>
           {progress < 100 ? "PREPARING TABLE…" : "ENTER THE DINER"}
         </button>
@@ -111,9 +140,88 @@ export default function Home() {
   const [dialogueRun, setDialogueRun] = useState(0);
   const [forcedHalfLine, setForcedHalfLine] = useState<string | null>(null);
   const [pendingPcLink, setPendingPcLink] = useState<PcLink | null>(null);
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundVolume, setSoundVolume] = useState(35);
+  const bgmRef = useRef<HTMLAudioElement>(null);
+  const bellAudioRef = useRef<HTMLAudioElement>(null);
+  const bgmFadeRef = useRef<number | null>(null);
+  const bellStopTimerRef = useRef<number | null>(null);
   const isTypingRef = useRef(false);
   const isTyping = loaded && typed.length < line.length;
   const displayedEyeFrame = forcedHalfLine ? "half" : eyeFrame;
+
+  const fadeBgmTo = (targetVolume: number, duration: number, pauseAfter = false) => {
+    const audio = bgmRef.current;
+    if (!audio) return;
+    if (bgmFadeRef.current !== null) window.cancelAnimationFrame(bgmFadeRef.current);
+
+    const from = audio.volume;
+    const target = Math.min(1, Math.max(0, targetVolume));
+    const startedAt = performance.now();
+    const tick = (now: number) => {
+      const progressValue = Math.min(1, (now - startedAt) / duration);
+      const eased = progressValue * progressValue * (3 - 2 * progressValue);
+      audio.volume = from + (target - from) * eased;
+      if (progressValue < 1) {
+        bgmFadeRef.current = window.requestAnimationFrame(tick);
+      } else {
+        bgmFadeRef.current = null;
+        if (pauseAfter) audio.pause();
+      }
+    };
+
+    bgmFadeRef.current = window.requestAnimationFrame(tick);
+  };
+
+  const startBgm = () => {
+    const audio = bgmRef.current;
+    if (!audio || !soundEnabled) return;
+    audio.volume = 0;
+    void audio.play().then(() => fadeBgmTo(soundVolume / 100, 1400)).catch(() => undefined);
+  };
+
+  const toggleSound = () => {
+    const nextEnabled = !soundEnabled;
+    setSoundEnabled(nextEnabled);
+    if (nextEnabled) {
+      if (loaded) {
+        const audio = bgmRef.current;
+        if (audio) {
+          audio.volume = 0;
+          void audio.play().then(() => fadeBgmTo(soundVolume / 100, 900)).catch(() => undefined);
+        }
+      }
+      return;
+    }
+
+    fadeBgmTo(0, 700, true);
+    if (bellStopTimerRef.current !== null) window.clearTimeout(bellStopTimerRef.current);
+    if (bellAudioRef.current) {
+      bellAudioRef.current.pause();
+      bellAudioRef.current.currentTime = 0;
+    }
+  };
+
+  const changeSoundVolume = (value: number) => {
+    setSoundVolume(value);
+    if (soundEnabled && loaded && bgmRef.current && !bgmRef.current.paused) fadeBgmTo(value / 100, 220);
+    if (bellAudioRef.current) bellAudioRef.current.volume = value / 100;
+  };
+
+  const playBellSound = () => {
+    const audio = bellAudioRef.current;
+    if (!audio || !soundEnabled) return;
+    if (bellStopTimerRef.current !== null) window.clearTimeout(bellStopTimerRef.current);
+    audio.pause();
+    audio.currentTime = 0;
+    audio.volume = soundVolume / 100;
+    void audio.play().catch(() => undefined);
+    bellStopTimerRef.current = window.setTimeout(() => {
+      audio.pause();
+      audio.currentTime = 0;
+      bellStopTimerRef.current = null;
+    }, 5000);
+  };
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -124,6 +232,11 @@ export default function Home() {
       });
     }, 55);
     return () => window.clearInterval(timer);
+  }, []);
+
+  useEffect(() => () => {
+    if (bgmFadeRef.current !== null) window.cancelAnimationFrame(bgmFadeRef.current);
+    if (bellStopTimerRef.current !== null) window.clearTimeout(bellStopTimerRef.current);
   }, []);
 
   useEffect(() => {
@@ -277,19 +390,25 @@ export default function Home() {
 
   const enterDiner = () => {
     if (progress < 100 || loadingExiting) return;
+    startBgm();
     setLoaded(true);
     setLoadingExiting(true);
   };
 
   return (
     <>
-      {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} />}
+      <audio ref={bgmRef} src="/audio/lofi-loop.mp3" loop preload="auto" />
+      <audio ref={bellAudioRef} src="/audio/service-bell.mp3" preload="auto" />
+      {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} soundEnabled={soundEnabled} soundVolume={soundVolume} onToggleSound={toggleSound} onVolumeChange={changeSoundVolume} />}
       {loaded && <main className="site-shell">
       <header className="topbar">
         <button className="brand brand--button" onClick={() => openScene("home")} aria-label="ホームへ戻る">
           <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
         </button>
-        <div className="open-sign"><span /> OPEN <small>00:00—05:00</small></div>
+        <div className="topbar-actions">
+          <SoundControls compact enabled={soundEnabled} volume={soundVolume} onToggle={toggleSound} onVolumeChange={changeSoundVolume} />
+          <div className="open-sign"><span /> OPEN <small>00:00—05:00</small></div>
+        </div>
       </header>
 
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
@@ -321,7 +440,7 @@ export default function Home() {
         <img className="scene-object-art scene-object-art--pc" src="/objects/pc.png" alt="" aria-hidden="true" />
         <img className="scene-object-art scene-object-art--picture" src="/objects/picture.png" alt="" aria-hidden="true" />
 
-        <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。")} aria-label="呼び鈴を鳴らす">
+        <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => { playBellSound(); reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。"); }} aria-label="呼び鈴を鳴らす">
           <em>RING</em>
         </button>
 
