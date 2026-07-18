@@ -15,7 +15,7 @@ body { margin: 0; color: var(--ink); background: var(--cream); font-family: "Yu 
 button, a { font: inherit; }
 button { color: inherit; }
 
-.loading-screen { position: fixed; z-index: 1000; inset: 0; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(18px, 3vw, 44px); background: radial-gradient(circle at 50% 40%, #fffdf6 0 18%, transparent 55%), var(--cream); opacity: 1; }
+.loading-screen { position: fixed; z-index: 1000; inset: 0; min-height: 100svh; display: grid; grid-template-rows: auto 1fr auto; padding: clamp(18px, 3vw, 44px); overflow-x: hidden; overflow-y: auto; background: radial-gradient(circle at 50% 40%, #fffdf6 0 18%, transparent 55%), var(--cream); opacity: 1; }
 .loading-screen--exiting { pointer-events: none; animation: loading-fade-out .72s cubic-bezier(.4, 0, .2, 1) forwards; }
 .brand { display: block; }
 .brand-logo { position: relative; display: block; overflow: hidden; width: 100%; aspect-ratio: 1860 / 420; }
@@ -43,6 +43,7 @@ button { color: inherit; }
 .open-sign { display: flex; align-items: center; gap: 8px; padding: 7px 12px; color: var(--red); font: 900 12px ui-monospace, monospace; letter-spacing: .1em; }
 .open-sign span { width: 10px; height: 10px; background: var(--red); border-radius: 50%; box-shadow: 0 0 0 5px rgba(213,43,30,.14); animation: blink 1.4s infinite; }.open-sign small { color: var(--teal); }
 .game-frame { position: relative; max-width: 1500px; aspect-ratio: 16/9; margin: auto; overflow: hidden; border: 4px solid var(--red); background: radial-gradient(circle at 50% 18%, #324d72 0 10%, #121b39 46%, #070b1c 100%); box-shadow: 9px 9px 0 var(--red-dark); isolation: isolate; }
+.scene-stage { position: absolute; inset: 0; overflow: hidden; }
 .scene-label { position: absolute; z-index: 12; top: 16px; left: 18px; padding: 7px 10px; color: var(--paper); background: var(--ink); font: 800 clamp(9px, .8vw, 13px) ui-monospace, monospace; letter-spacing: .14em; }
 .scene-background { position: absolute; z-index: 2; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; }
 .scene-object-art { position: absolute; z-index: 7; inset: 0; width: 100%; height: 100%; object-fit: cover; pointer-events: none; user-select: none; transition: filter .18s ease, transform .18s ease; }
@@ -141,44 +142,49 @@ button { color: inherit; }
 
 @media (max-width: 800px) {
   .site-shell { padding: 12px 8px 22px; }
-  .topbar { flex-wrap: wrap; }.topbar-actions { margin-left: auto; }.sound-controls--compact .volume-control { min-width: 125px; }.sound-controls--compact .volume-control > span { display: none; }.sound-controls--compact .volume-control { grid-template-columns: minmax(60px, 1fr) 22px; }
+  .topbar { display: grid; grid-template-columns: minmax(0, 1fr); align-items: center; gap: 6px; }.brand--button { width: min(100%, 560px); }.topbar-actions { width: 100%; margin-left: 0; justify-content: space-between; }.sound-controls--compact .volume-control { min-width: 125px; }.sound-controls--compact .volume-control > span { display: none; }.sound-controls--compact .volume-control { grid-template-columns: minmax(60px, 1fr) 22px; }
   .open-sign small { display: none; }
-  .game-frame { min-height: 67svh; aspect-ratio: auto; }
-  .cube-stage { left: 22%; top: 1%; width: 56%; height: 35%; }
-  .diner-window { left: 13%; width: 58%; height: 30%; }
-  .picture { left: 0; right: auto; top: 16.5%; width: 16%; height: 17.2%; }
-  .table { left: 8%; top: 48%; width: 72%; height: 17%; }
-  .bell { left: 44%; top: 46.7%; width: 6%; height: 6.2%; }.menu-object { left: 54%; top: 30.4%; width: 10%; height: 22%; }.pc-object { left: 24%; top: 40.3%; width: 15%; height: 18.2%; }
-  .character { right: -7%; top: 5%; width: 58%; height: 118%; }
-  .character p { bottom: 24%; }
-  .character--overlay { right: -17%; left: auto; top: 1%; width: 68%; height: 150%; }
-  .dialogue { left: 3%; right: 3%; bottom: 2%; min-height: 18%; grid-template-columns: 24% 1fr auto; }
-  .overlay-panel { inset: 7% 31% 22% 3%; }
+  .game-frame { min-height: 0; aspect-ratio: auto; overflow: hidden; }
+  .scene-stage { position: relative; inset: auto; width: 100%; aspect-ratio: 16/9; border-bottom: 3px solid var(--ink); }
+  .game-frame--overlay .scene-stage { min-height: clamp(470px, 68svh, 650px); aspect-ratio: auto; }
+  .game-frame--overlay .scene-background, .game-frame--overlay .scene-object-art { object-fit: cover; }
+  .cube-stage { --cube-size: clamp(42px, 10vw, 80px); --cube-half: clamp(21px, 5vw, 40px); }
+  .character { right: -2%; top: 1%; width: 44%; height: 132%; }
+  .character p { display: none; }
+  .character--overlay { right: -12%; left: auto; top: 0; width: 62%; height: 150%; }
+  .dialogue { position: relative; left: auto; right: auto; bottom: auto; width: 100%; min-height: clamp(118px, 28vw, 150px); grid-template-columns: minmax(86px, 22%) 1fr auto; border: 0; background: var(--paper); box-shadow: none; }
+  .overlay-panel { inset: 5% 31% 5% 3%; }
   .book-page { padding: 24px 16px; }
   .pc-desktop { padding: 14px; }.pc-icon-grid { grid-template-columns: repeat(3, minmax(74px, 1fr)); }.pc-icon { min-height: 100px; padding: 8px 4px; }.pc-icon-picture { width: clamp(38px, 6vw, 58px); }
-  .page-nav { gap: 5px; }.page-nav button { padding: 10px 3px; border-width: 2px; }.page-nav button span { display: none; }
+  .page-nav { gap: 7px; margin-top: 18px; }.page-nav button { padding: 10px 5px; border-width: 2px; }
 }
 
 @media (max-width: 520px) {
   .loading-screen { padding: 15px; }.loading-card { padding: 95px 18px 30px; }.loading-rabbit-badge { width: 140px; }.loading-footer { font-size: 8px; }.sound-controls:not(.sound-controls--compact) { flex-direction: column; gap: 7px; }.sound-controls:not(.sound-controls--compact) .sound-toggle, .sound-controls:not(.sound-controls--compact) .volume-control { width: min(100%, 280px); }.volume-control { min-width: 0; }
-  .topbar { align-items: center; }.brand--button { width: min(76vw, 330px); }.topbar-actions { width: 100%; justify-content: space-between; gap: 4px; }.sound-controls--compact .sound-toggle { min-width: 78px; }.sound-controls--compact .volume-control { min-width: 100px; }.open-sign { padding: 5px; font-size: 9px; }
-  .game-frame { min-height: 650px; }
-  .cube-stage { left: 5%; top: 1%; width: 90%; height: 36%; }
+  .brand--button { width: 100%; }.topbar-actions { gap: 4px; }.sound-controls--compact .sound-toggle { min-width: 76px; }.sound-controls--compact .volume-control { min-width: 92px; }.open-sign { padding: 5px; font-size: 9px; }
   .scene-label { top: 9px; left: 9px; }
-  .booth { top: 27%; height: 38%; width: 40%; }.booth--left { left: -18%; }.booth--right { right: -16%; }
-  .diner-window { left: 8%; width: 66%; height: 27%; }
-  .table { left: 3%; top: 45%; width: 81%; height: 16%; }
-  .bell { left: 39%; top: 46.7%; width: 10%; height: 6.2%; }.menu-object { left: 60%; top: 30.4%; width: 19%; height: 22%; }.pc-object { left: 2%; top: 40.3%; width: 27%; height: 18.2%; }
-  .character { width: 76%; right: -15%; top: 8%; height: 108%; }
-  .character p { bottom: 20%; right: 10%; }
-  .character--overlay { width: 78%; right: -28%; left: auto; top: 5%; height: 136%; }
-  .picture { display: none; }
+  .game-frame--overlay .scene-stage { min-height: max(510px, 70svh); }
+  .character { width: 48%; right: -4%; top: 1%; height: 134%; }
+  .character--overlay { width: 72%; right: -24%; left: auto; top: 2%; height: 142%; }
   .object-status { top: -24px; padding: 3px 5px; }.preparing-banner { max-width: 100%; gap: 6px; padding: 5px 7px; }.preparing-banner--floating span { display: none; }
   .info-card dl { grid-template-columns: 1fr; }.blog-placeholder { grid-template-columns: 1fr; gap: 6px; }.blog-placeholder small { justify-self: start; }
-  .overlay-panel { inset: 5% 21% 22% 2%; }.book { grid-template-columns: 1fr; overflow-y: auto; }.book-page:first-child, .book-page:last-child { transform: none; border-radius: 0; }.book-page { min-height: 70%; }.work-link { margin-bottom: 10%; }
+  .overlay-panel { inset: 4% 25% 4% 2%; }.book { grid-template-columns: 1fr; overflow-y: auto; }.book-page:first-child, .book-page:last-child { transform: none; border-radius: 0; }.book-page { min-height: 70%; }.work-link { margin-bottom: 10%; }
   .pc-titlebar { grid-template-columns: auto 1fr; padding: 5px 7px; }.pc-title-status { display: none; }.pc-desktop { padding: 10px; }.pc-icon-grid { grid-template-columns: repeat(2, minmax(70px, 1fr)); gap: 6px; }.pc-icon { min-height: 90px; grid-template-columns: 1fr; grid-template-rows: auto auto auto; justify-items: center; text-align: center; }.pc-icon-picture { grid-row: auto; width: 42px; }.pc-icon strong { margin-top: 3px; }.pc-icon-badge { top: 2px; right: 1px; }.pc-confirm-screen { padding: 8px; }.pc-confirm { padding: 14px; }.pc-confirm-actions { flex-direction: column-reverse; }.pc-confirm-actions button { width: 100%; }.pc-taskbar { grid-template-columns: auto 1fr; }.pc-connection { display: none; }
-  .dialogue { grid-template-columns: 27% 1fr; min-height: 20%; }.dialogue button { position: absolute; right: 0; bottom: 0; }.dialogue p { padding: 11px; }
-  .site-footer { font-size: 7px; }
+  .dialogue { grid-template-columns: 78px 1fr; min-height: 132px; }.dialogue button { position: absolute; right: 0; bottom: 0; }.dialogue p { padding: 11px 11px 28px; font-size: 11px; line-height: 1.65; }
+  .speaker { padding: 10px; }.speaker strong { font-size: 16px; }
+  .page-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }.page-nav button { border-radius: 999px; }.page-nav button span { display: inline; }
+  .site-footer { gap: 10px; flex-wrap: wrap; font-size: 7px; }
+}
+
+@media (max-height: 800px) {
+  .loading-screen { gap: 8px; padding-top: 14px; padding-bottom: 14px; }
+  .brand--loading { width: min(760px, 88vw); }
+  .loading-card { padding-top: 66px; padding-bottom: 18px; }
+  .loading-rabbit-badge { width: clamp(112px, 15vh, 145px); }
+  .loading-card h1 { margin-bottom: 14px; font-size: clamp(38px, 8vh, 66px); }
+  .loading-track { height: 38px; }
+  .loading-count { margin-bottom: 12px; }
+  .loading-card .enter-button { margin-top: 10px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -416,6 +416,7 @@ export default function Home() {
       </header>
 
       <section className={`game-frame ${scene !== "home" ? "game-frame--overlay" : ""}`} aria-label="RabbitHole Diner 店内">
+        <div className="scene-stage">
         <div className="scene-label">SCENE 01 / {sceneTitle}</div>
         <div className="cube-stage">
           <button
@@ -572,6 +573,8 @@ export default function Home() {
             )}
           </section>
         )}
+
+        </div>
 
         <section className="dialogue" id="dialogue" onClick={() => setTyped(line)} aria-live="polite">
           <div className="speaker"><small>STAFF</small><strong>No.07</strong></div>
