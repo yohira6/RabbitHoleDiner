@@ -29,7 +29,7 @@ const pcLinks: PcLink[] = [
   { id: "x", label: "X", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art" },
   { id: "x-r18", label: "X / R18", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art_R18", adult: true },
   { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265", adult: true },
-  { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/", status: "準備中" },
+  { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/" },
   { id: "booth", label: "BOOTH", detail: "STORE", glyph: "B", href: "https://yohira6.booth.pm/" },
   { id: "skeb", label: "Skeb", detail: "REQUEST", glyph: "S", href: "https://skeb.jp/@R_P_art" },
   { id: "discord", label: "Discord", detail: "COMMUNITY", glyph: "D", href: "https://discord.gg/n86RMWMDZe" },
@@ -451,14 +451,12 @@ export default function Home() {
         </button>
 
         <button className="hotspot menu-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
-          <span className="object-status">準備中</span>
         </button>
 
         <button className="hotspot pc-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さなノートPC。画面の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="パソコンからリンクを見る">
         </button>
 
         <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
-          <span className="object-status">準備中</span>
         </button>
 
         {scene !== "home" && <div className="scene-dimmer" aria-hidden="true" />}
@@ -494,7 +492,6 @@ export default function Home() {
             <button className="panel-close" onClick={() => openScene("home")} aria-label="閉じる">×</button>
             {scene === "menu" && (
               <div className="panel-content-with-notice">
-                <div className="preparing-banner preparing-banner--floating"><strong>準備中</strong><span>作品とメニューを整理しています</span></div>
                 <div className="book">
                   <div className="book-page">
                     <p className="book-kicker">TONIGHT&apos;S SPECIALS</p>
@@ -503,7 +500,6 @@ export default function Home() {
                       <small>01 / PC SOFTWARE</small>
                       <strong>DF Library</strong>
                       <span>DMM・FANZA用ゲームの整理ソフト</span>
-                      <span>yohira6/DF-Library ↗</span>
                     </button>
                   </div>
                   <div className="book-page">
@@ -516,7 +512,6 @@ export default function Home() {
             )}
             {scene === "about" && (
               <div className="info-card">
-                <div className="preparing-banner"><strong>準備中</strong><span>絵と紹介内容を整理しています</span></div>
                 <p className="book-kicker">ABOUT THIS PLACE</p><h2>Rabbit Hole Diner</h2>
                 <p>ブログや作品、各種リンク等を並べるための個人サイトです。<br />個人サークル&quot;RabbitPunch&quot;が制作しました。</p>
                 <dl><div><dt>OWNER</dt><dd>よひらろく(yohira6)</dd></div><div><dt>e-mail</dt><dd><a href="mailto:rabbit.punch.art@gmail.com">rabbit.punch.art@gmail.com</a></dd></div></dl>
