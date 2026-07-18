@@ -29,7 +29,7 @@ const pcLinks: PcLink[] = [
   { id: "x", label: "X", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art" },
   { id: "x-r18", label: "X / R18", detail: "SNS", glyph: "X", href: "https://x.com/R_P_art_R18", adult: true },
   { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265", adult: true },
-  { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/" },
+  { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/", status: "準備中" },
   { id: "booth", label: "BOOTH", detail: "STORE", glyph: "B", href: "https://yohira6.booth.pm/" },
   { id: "skeb", label: "Skeb", detail: "REQUEST", glyph: "S", href: "https://skeb.jp/@R_P_art" },
   { id: "discord", label: "Discord", detail: "COMMUNITY", glyph: "D", href: "https://discord.gg/n86RMWMDZe" },
@@ -499,7 +499,7 @@ export default function Home() {
                     <button type="button" onClick={() => openPcLink(dfLibraryLink)} className="work-link">
                       <small>01 / PC SOFTWARE</small>
                       <strong>DF Library</strong>
-                      <span>DMM・FANZA用ゲームの整理ソフト</span>
+                      <span>DMM・FANZAゲーム用の整理ソフト</span>
                     </button>
                   </div>
                   <div className="book-page">
