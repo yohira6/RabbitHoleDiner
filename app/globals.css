@@ -151,7 +151,7 @@ button { color: inherit; }
   .cube-stage { --cube-size: clamp(42px, 10vw, 80px); --cube-half: clamp(21px, 5vw, 40px); }
   .character { right: -2%; top: 1%; width: 44%; height: 132%; }
   .character p { display: none; }
-  .character--overlay { right: 1%; left: auto; top: 6%; width: 100%; height: 88%; }
+  .character--overlay { right: -2%; left: auto; top: 0; width: 100%; height: 118%; }
   .dialogue { position: relative; left: auto; right: auto; bottom: auto; width: 100%; min-height: clamp(118px, 28vw, 150px); grid-template-columns: minmax(86px, 22%) 1fr auto; border: 0; background: var(--paper); box-shadow: none; }
   .overlay-panel { inset: 5% 45% 5% 3%; }
   .book-page { padding: 24px 16px; }
@@ -165,7 +165,7 @@ button { color: inherit; }
   .scene-label { top: 9px; left: 9px; }
   .game-frame--overlay .scene-stage { min-height: max(510px, 70svh); }
   .character { width: 48%; right: -4%; top: 1%; height: 134%; }
-  .character--overlay { width: 100%; right: 1%; left: auto; top: 5%; height: clamp(52%, calc(95vw - 45px), 88%); }
+  .character--overlay { width: 100%; right: 1%; left: auto; top: 3%; height: min(96vw, 100%); }
   .object-status { top: -24px; padding: 3px 5px; }.preparing-banner { max-width: 100%; gap: 6px; padding: 5px 7px; }.preparing-banner--floating span { display: none; }
   .info-card dl { grid-template-columns: 1fr; }.blog-placeholder { grid-template-columns: 1fr; gap: 6px; }.blog-placeholder small { justify-self: start; }
   .overlay-panel { inset: 4% 53% 4% 2%; }.book { grid-template-columns: 1fr; overflow-y: auto; }.book-page:first-child, .book-page:last-child { transform: none; border-radius: 0; }.book-page { min-height: 70%; }.work-link { margin-bottom: 10%; }
