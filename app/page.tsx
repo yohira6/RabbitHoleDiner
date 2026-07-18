@@ -445,21 +445,17 @@ export default function Home() {
         <img className="scene-object-art scene-object-art--picture" src={assetPath("objects/picture.png")} alt="" aria-hidden="true" />
 
         <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => { playBellSound(); reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。"); }} aria-label="呼び鈴を鳴らす">
-          <em>RING</em>
         </button>
 
         <button className="hotspot menu-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
           <span className="object-status">準備中</span>
-          <em>OPEN</em>
         </button>
 
         <button className="hotspot pc-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さなノートPC。画面の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="パソコンからリンクを見る">
-          <em>OPEN</em>
         </button>
 
         <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
           <span className="object-status">準備中</span>
-          <em>ABOUT</em>
         </button>
 
         {scene !== "home" && <div className="scene-dimmer" aria-hidden="true" />}
