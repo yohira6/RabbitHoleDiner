@@ -37,6 +37,8 @@ const pcLinks: PcLink[] = [
   { id: "pixiv", label: "pixiv", detail: "GALLERY", glyph: "P", href: "https://www.pixiv.net/users/45724265", adult: true },
   { id: "fanbox", label: "FANBOX", detail: "GALLERY", glyph: "F", href: "https://yohira6.fanbox.cc/", status: "準備中" },
   { id: "booth", label: "BOOTH", detail: "STORE", glyph: "B", href: "https://yohira6.booth.pm/" },
+  { id: "skeb", label: "Skeb", detail: "REQUEST", glyph: "S", href: "https://skeb.jp/@R_P_art" },
+  { id: "discord", label: "Discord", detail: "COMMUNITY", glyph: "D", href: "https://discord.gg/VX3bt7pRpP" },
 ];
 
 const ambientDialogue = [
