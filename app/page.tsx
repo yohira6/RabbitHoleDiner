@@ -518,9 +518,12 @@ export default function Home() {
             {scene === "about" && (
               <div className="info-card">
                 <div className="preparing-banner"><strong>準備中</strong><span>絵と紹介内容を整理しています</span></div>
-                <p className="book-kicker">ABOUT THIS PLACE</p><h2>夜だけ開く、作品置き場。</h2>
-                <p>イラスト、ゲーム、Web作品などを並べるための個人サイトです。店内のものに触れながら、少しずつページを巡れます。</p>
-                <dl><div><dt>OWNER</dt><dd>Your Name</dd></div><div><dt>STATUS</dt><dd>OPEN / WORK IN PROGRESS</dd></div></dl>
+                <p className="book-kicker">ABOUT THIS PLACE</p><h2>Rabbit Hole Diner</h2>
+                <p>ブログや作品、各種リンク等を並べるための個人サイトです。<br />個人サークル&quot;RabbitPunch&quot;が制作しました。</p>
+                <dl><div><dt>OWNER</dt><dd>よひらろく(yohira6)</dd></div><div><dt>e-mail</dt><dd><a href="mailto:rabbit.punch.art@gmail.com">rabbit.punch.art@gmail.com</a></dd></div></dl>
+                <button type="button" className="blog-placeholder" onClick={() => { setTyped(""); setDialogueRun((current) => current + 1); setLine("ブログページは準備中だよ。公開までもう少し待っていてね。"); }}>
+                  <span>BLOG</span><strong>ブログページ</strong><small>COMING SOON →</small>
+                </button>
               </div>
             )}
             {scene === "links" && (
