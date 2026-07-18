@@ -4,6 +4,8 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 type Scene = "home" | "menu" | "about" | "links";
 
+const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
+
 const dialogue: Record<Scene, string> = {
   home: "いらっしゃいませ。気になるものを、ゆっくり見ていってね。",
   menu: "今日のメニューだよ。作品名を押すと、そのページへ案内するね。",
@@ -102,11 +104,11 @@ function LoadingScreen({ progress, exiting = false, onEnter, soundEnabled, sound
   return (
     <main className={`loading-screen ${exiting ? "loading-screen--exiting" : ""}`}>
       <header className="brand brand--loading">
-        <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
+        <span className="brand-logo"><img src={assetPath("branding/logo.png")} alt="Rabbit Hole Diner" /></span>
       </header>
       <section className="loading-card" aria-live="polite">
         <div className="loading-rabbit-badge" aria-hidden="true">
-          <img src="/branding/rabbit-loading.png" alt="" />
+          <img src={assetPath("branding/rabbit-loading.png")} alt="" />
         </div>
         <p className="eyebrow">WELCOME, GUEST</p>
         <h1>Now Loading…</h1>
@@ -397,13 +399,13 @@ export default function Home() {
 
   return (
     <>
-      <audio ref={bgmRef} src="/audio/lofi-loop.mp3" loop preload="auto" />
-      <audio ref={bellAudioRef} src="/audio/service-bell.mp3" preload="auto" />
+      <audio ref={bgmRef} src={assetPath("audio/lofi-loop.mp3")} loop preload="auto" />
+      <audio ref={bellAudioRef} src={assetPath("audio/service-bell.mp3")} preload="auto" />
       {showLoading && <LoadingScreen progress={progress} exiting={loadingExiting} onEnter={enterDiner} soundEnabled={soundEnabled} soundVolume={soundVolume} onToggleSound={toggleSound} onVolumeChange={changeSoundVolume} />}
       {loaded && <main className="site-shell">
       <header className="topbar">
         <button className="brand brand--button" onClick={() => openScene("home")} aria-label="ホームへ戻る">
-          <span className="brand-logo"><img src="/branding/logo.png" alt="Rabbit Hole Diner" /></span>
+          <span className="brand-logo"><img src={assetPath("branding/logo.png")} alt="Rabbit Hole Diner" /></span>
         </button>
         <div className="topbar-actions">
           <SoundControls compact enabled={soundEnabled} volume={soundVolume} onToggle={toggleSound} onVolumeChange={changeSoundVolume} />
@@ -434,11 +436,11 @@ export default function Home() {
             </span>
           </button>
         </div>
-        <img className="scene-background" src="/backgrounds/rhd-main.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art scene-object-art--ring" src="/objects/ring.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art scene-object-art--menu" src="/objects/menu.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art scene-object-art--pc" src="/objects/pc.png" alt="" aria-hidden="true" />
-        <img className="scene-object-art scene-object-art--picture" src="/objects/picture.png" alt="" aria-hidden="true" />
+        <img className="scene-background" src={assetPath("backgrounds/rhd-main.png")} alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--ring" src={assetPath("objects/ring.png")} alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--menu" src={assetPath("objects/menu.png")} alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--pc" src={assetPath("objects/pc.png")} alt="" aria-hidden="true" />
+        <img className="scene-object-art scene-object-art--picture" src={assetPath("objects/picture.png")} alt="" aria-hidden="true" />
 
         <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => { playBellSound(); reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。"); }} aria-label="呼び鈴を鳴らす">
           <em>RING</em>
@@ -463,12 +465,12 @@ export default function Home() {
         <aside className={`character ${scene !== "home" ? "character--overlay" : ""} ${characterReaction ? `character--reaction-${characterReaction}` : ""}`} aria-label="案内役のキャラクター">
           <div className="character-shadow" />
           <div className="character-art" aria-hidden="true" key={characterReactionRun}>
-            <img className="character-base" src="/character/base.png" alt="" />
+            <img className="character-base" src={assetPath("character/base.png")} alt="" />
             {(["open", "half", "closed"] as const).map((frame) => (
               <img
                 key={`eyes-${frame}`}
                 className={`character-layer character-eyes ${displayedEyeFrame === frame ? "is-active" : ""}`}
-                src={`/character/eyes-${frame}.png`}
+                src={assetPath(`character/eyes-${frame}.png`)}
                 alt=""
               />
             ))}
@@ -476,7 +478,7 @@ export default function Home() {
               <img
                 key={`mouth-${frame}`}
                 className={`character-layer character-mouth ${mouthFrame === frame ? "is-active" : ""}`}
-                src={`/character/mouth-${frame}.png`}
+                src={assetPath(`character/mouth-${frame}.png`)}
                 alt=""
               />
             ))}
