@@ -13,12 +13,6 @@ const dialogue: Record<Scene, string> = {
   links: "パソコンを起動したよ。アイコンから、店の外へ出られるようにしておくね。",
 };
 
-const works = [
-  { tag: "PC SOFTWARE", title: "Midnight Order", note: "短編ノベルゲーム / 制作中" },
-  { tag: "WEB APP", title: "Tiny Recipe Book", note: "小さな献立記録アプリ" },
-  { tag: "ILLUSTRATION", title: "Rabbit Hole Sketches", note: "ダイナーの設定画集" },
-];
-
 type PcLink = {
   id: string;
   label: string;
@@ -40,6 +34,14 @@ const pcLinks: PcLink[] = [
   { id: "skeb", label: "Skeb", detail: "REQUEST", glyph: "S", href: "https://skeb.jp/@R_P_art" },
   { id: "discord", label: "Discord", detail: "COMMUNITY", glyph: "D", href: "https://discord.gg/n86RMWMDZe" },
 ];
+
+const dfLibraryLink: PcLink = {
+  id: "df-library",
+  label: "DF Library",
+  detail: "PC SOFTWARE",
+  glyph: "DF",
+  href: "https://github.com/yohira6/DF-Library",
+};
 
 const ambientDialogue = [
   "……静かな夜だね。こういう時間、嫌いじゃないよ。",
@@ -497,18 +499,16 @@ export default function Home() {
                   <div className="book-page">
                     <p className="book-kicker">TONIGHT&apos;S SPECIALS</p>
                     <h2>MENU</h2>
-                    {works.slice(0, 2).map((work, index) => (
-                      <button type="button" onClick={() => setLine(`${work.title}。${work.note}だよ。`)} className="work-link" key={work.title}>
-                        <small>0{index + 1} / {work.tag}</small><strong>{work.title}</strong><span>{work.note}</span>
-                      </button>
-                    ))}
+                    <button type="button" onClick={() => openPcLink(dfLibraryLink)} className="work-link">
+                      <small>01 / PC SOFTWARE</small>
+                      <strong>DF Library</strong>
+                      <span>DMM・FANZA用ゲームの整理ソフト</span>
+                      <span>yohira6/DF-Library ↗</span>
+                    </button>
                   </div>
                   <div className="book-page">
-                    <p className="book-kicker">DESSERT &amp; ART</p>
-                    <h2>GALLERY</h2>
-                    <button type="button" onClick={() => setLine(`${works[2].title}。${works[2].note}だよ。`)} className="work-link">
-                      <small>03 / {works[2].tag}</small><strong>{works[2].title}</strong><span>{works[2].note}</span>
-                    </button>
+                    <p className="book-kicker">NEXT UPDATE</p>
+                    <h2>MORE</h2>
                     <div className="menu-note">NEW ITEMS<br />COMING SOON…</div>
                   </div>
                 </div>
@@ -544,31 +544,31 @@ export default function Home() {
                       </button>
                     ))}
                   </div>
-                  {pendingPcLink && (
-                    <div className="pc-confirm-screen">
-                      <section className={`pc-confirm ${pendingPcLink.adult ? "pc-confirm--adult" : ""}`} role="dialog" aria-modal="true" aria-labelledby="pc-confirm-title">
-                        <p className="pc-confirm-kicker">EXTERNAL LINK</p>
-                        <h3 id="pc-confirm-title">{pendingPcLink.label}</h3>
-                        <p>これからRabbitHole Dinerを離れて、外部サイトへ移動します。開いても大丈夫？</p>
-                        {pendingPcLink.adult && (
-                          <div className="pc-adult-warning">
-                            <strong>18+ / 成人向けコンテンツ</strong>
-                            <p>リンク先には成人向けの内容が含まれます。18歳未満の方は移動しないでください。</p>
-                          </div>
-                        )}
-                        <div className="pc-confirm-actions">
-                          <button type="button" onClick={() => setPendingPcLink(null)}>戻る</button>
-                          <button type="button" className="pc-confirm-open" onClick={confirmPcLink}>{pendingPcLink.adult ? "18歳以上として移動" : "外部サイトへ移動"} ↗</button>
-                        </div>
-                      </section>
-                    </div>
-                  )}
                 </div>
                 <div className="pc-taskbar">
                   <span className="pc-start">RHD</span>
                   <span className="pc-connection"><i /> NETWORK CONNECTED</span>
                   <time>00:07</time>
                 </div>
+              </div>
+            )}
+            {pendingPcLink && (
+              <div className="pc-confirm-screen">
+                <section className={`pc-confirm ${pendingPcLink.adult ? "pc-confirm--adult" : ""}`} role="dialog" aria-modal="true" aria-labelledby="pc-confirm-title">
+                  <p className="pc-confirm-kicker">EXTERNAL LINK</p>
+                  <h3 id="pc-confirm-title">{pendingPcLink.label}</h3>
+                  <p>これからRabbitHole Dinerを離れて、外部サイトへ移動します。開いても大丈夫？</p>
+                  {pendingPcLink.adult && (
+                    <div className="pc-adult-warning">
+                      <strong>18+ / 成人向けコンテンツ</strong>
+                      <p>リンク先には成人向けの内容が含まれます。18歳未満の方は移動しないでください。</p>
+                    </div>
+                  )}
+                  <div className="pc-confirm-actions">
+                    <button type="button" onClick={() => setPendingPcLink(null)}>戻る</button>
+                    <button type="button" className="pc-confirm-open" onClick={confirmPcLink}>{pendingPcLink.adult ? "18歳以上として移動" : "外部サイトへ移動"} ↗</button>
+                  </div>
+                </section>
               </div>
             )}
           </section>
