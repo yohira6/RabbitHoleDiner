@@ -1,6 +1,6 @@
 # RabbitHole Diner
 
-夜更けのダイナーを舞台にした、ADVゲーム風の個人作品サイトです。
+サークルRabbitPunchの個人サイトです。
 
 ## 公開ページ
 
