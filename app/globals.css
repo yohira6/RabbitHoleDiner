@@ -151,9 +151,9 @@ button { color: inherit; }
   .cube-stage { --cube-size: clamp(42px, 10vw, 80px); --cube-half: clamp(21px, 5vw, 40px); }
   .character { right: -2%; top: 1%; width: 44%; height: 132%; }
   .character p { display: none; }
-  .character--overlay { right: -2%; left: auto; top: 0; width: 100%; height: 118%; }
+  .character--overlay { right: 1%; left: auto; top: 6%; width: 100%; height: 88%; }
   .dialogue { position: relative; left: auto; right: auto; bottom: auto; width: 100%; min-height: clamp(118px, 28vw, 150px); grid-template-columns: minmax(86px, 22%) 1fr auto; border: 0; background: var(--paper); box-shadow: none; }
-  .overlay-panel { inset: 5% 31% 5% 3%; }
+  .overlay-panel { inset: 5% 45% 5% 3%; }
   .book-page { padding: 24px 16px; }
   .pc-desktop { padding: 14px; }.pc-icon-grid { grid-template-columns: repeat(3, minmax(74px, 1fr)); }.pc-icon { min-height: 100px; padding: 8px 4px; }.pc-icon-picture { width: clamp(38px, 6vw, 58px); }
   .page-nav { gap: 7px; margin-top: 18px; }.page-nav button { padding: 10px 5px; border-width: 2px; }
@@ -165,11 +165,11 @@ button { color: inherit; }
   .scene-label { top: 9px; left: 9px; }
   .game-frame--overlay .scene-stage { min-height: max(510px, 70svh); }
   .character { width: 48%; right: -4%; top: 1%; height: 134%; }
-  .character--overlay { width: 100%; right: 1%; left: auto; top: 0; height: 92%; }
+  .character--overlay { width: 100%; right: 1%; left: auto; top: 5%; height: 46%; }
   .object-status { top: -24px; padding: 3px 5px; }.preparing-banner { max-width: 100%; gap: 6px; padding: 5px 7px; }.preparing-banner--floating span { display: none; }
   .info-card dl { grid-template-columns: 1fr; }.blog-placeholder { grid-template-columns: 1fr; gap: 6px; }.blog-placeholder small { justify-self: start; }
-  .overlay-panel { inset: 4% 25% 4% 2%; }.book { grid-template-columns: 1fr; overflow-y: auto; }.book-page:first-child, .book-page:last-child { transform: none; border-radius: 0; }.book-page { min-height: 70%; }.work-link { margin-bottom: 10%; }
-  .pc-titlebar { grid-template-columns: auto 1fr; padding: 5px 7px; }.pc-title-status { display: none; }.pc-desktop { padding: 10px; }.pc-icon-grid { grid-template-columns: repeat(2, minmax(70px, 1fr)); gap: 6px; }.pc-icon { min-height: 90px; grid-template-columns: 1fr; grid-template-rows: auto auto auto; justify-items: center; text-align: center; }.pc-icon-picture { grid-row: auto; width: 42px; }.pc-icon strong { margin-top: 3px; }.pc-icon-badge { top: 2px; right: 1px; }.pc-confirm-screen { padding: 8px; }.pc-confirm { padding: 14px; }.pc-confirm-actions { flex-direction: column-reverse; }.pc-confirm-actions button { width: 100%; }.pc-taskbar { grid-template-columns: auto 1fr; }.pc-connection { display: none; }
+  .overlay-panel { inset: 4% 48% 4% 2%; }.book { grid-template-columns: 1fr; overflow-y: auto; }.book-page:first-child, .book-page:last-child { transform: none; border-radius: 0; }.book-page { min-height: 70%; }.work-link { margin-bottom: 10%; }
+  .pc-titlebar { grid-template-columns: auto 1fr; padding: 5px 7px; }.pc-title-status { display: none; }.pc-desktop { padding: 10px; }.pc-icon-grid { grid-template-columns: 1fr; gap: 6px; }.pc-icon { min-height: 82px; grid-template-columns: 1fr; grid-template-rows: auto auto auto; justify-items: center; text-align: center; }.pc-icon-picture { grid-row: auto; width: 42px; }.pc-icon strong { margin-top: 3px; }.pc-icon-badge { top: 2px; right: 1px; }.pc-confirm-screen { padding: 8px; }.pc-confirm { padding: 14px; }.pc-confirm-actions { flex-direction: column-reverse; }.pc-confirm-actions button { width: 100%; }.pc-taskbar { grid-template-columns: auto 1fr; }.pc-connection { display: none; }
   .dialogue { grid-template-columns: 78px 1fr; min-height: 132px; }.dialogue button { position: absolute; right: 0; bottom: 0; }.dialogue p { padding: 11px 11px 28px; font-size: 11px; line-height: 1.65; }
   .speaker { padding: 10px; }.speaker strong { font-size: 16px; }
   .page-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }.page-nav button { border-radius: 999px; }.page-nav button span { display: inline; }
