@@ -7,10 +7,10 @@ type Scene = "home" | "menu" | "about" | "links";
 const assetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\//, "")}`;
 
 const dialogue: Record<Scene, string> = {
-  home: "いらっしゃいませ。気になるものを、ゆっくり見ていってね。",
-  menu: "今日のメニューだよ。作品名を押すと、そのページへ案内するね。",
-  about: "ここは、絵と小さな作品を置いている夜更かしダイナーです。",
-  links: "パソコンを起動したよ。アイコンから、店の外へ出られるようにしておくね。",
+  home: "いらっしゃいませ、ゲストさん。気になるものを、ゆっくり見ていってね。",
+  menu: "今日のメニューだよ。作品名を押すと、そのページへ案内するよ。",
+  about: "ここの説明。オーナーさんの日記も置いてあるよ。",
+  links: "パソコンを起動したよ。アイコンから、お店の外へ出られるようにしておくね。",
 };
 
 type PcLink = {
@@ -44,10 +44,10 @@ const dfLibraryLink: PcLink = {
 };
 
 const ambientDialogue = [
-  "……静かな夜だね。こういう時間、嫌いじゃないよ。",
-  "窓の向こう、さっきから景色が少しずつ違って見える。",
+  "……静かな夜。こういう時間、嫌いじゃないな。",
+  "窓の向こう、さっきから景色が少しずつ違って見えない？",
   "急がなくていいよ。席はまだ空いてるから。",
-  "今日は何を描いてたの？　あとで少し見せてほしいな。",
+  "今日は何をしてた？　あとで少し、教えてほしいな。",
   "店内の音って、ぼんやり聞いていると眠くなるね……。",
   "メニューにないものでも、話くらいなら聞けるよ。",
 ];
@@ -67,7 +67,7 @@ const characterDialogue: Record<"head" | "chest", string[]> = {
     "ちょっと……そこを呼び鈴みたいに押さないで。",
     "何度触っても、追加注文は受け付けないからね……。",
     "……接客中なんだけど。少しは遠慮してほしいかも。",
-    "呼び鈴と間違えるには、ずいぶん無理があると思う……。",
+    "呼び鈴と間違えるには、ずいぶん無理があるんじゃないかな……。",
   ],
 };
 
@@ -447,7 +447,7 @@ export default function Home() {
         <img className="scene-object-art scene-object-art--pc" src={assetPath("objects/pc.png")} alt="" aria-hidden="true" />
         <img className="scene-object-art scene-object-art--picture" src={assetPath("objects/picture.png")} alt="" aria-hidden="true" />
 
-        <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに音が聞こえる気がする。")} onClick={() => { playBellSound(); reactToObject("ちりん……ご注文が決まったら、また鳴らしてね。"); }} aria-label="呼び鈴を鳴らす">
+        <button className="hotspot bell" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さな呼び鈴。触れなくても、かすかに震えている気がする。")} onClick={() => { playBellSound(); reactToObject("ちりん……オーダーが決まったら、また鳴らしてね。"); }} aria-label="呼び鈴を鳴らす">
         </button>
 
         <button className="hotspot menu-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("使い込まれたメニューブック。今夜のおすすめが挟まっているみたい。")} onClick={() => openScene("menu")} aria-label="メニューブックを開く">
@@ -456,7 +456,7 @@ export default function Home() {
         <button className="hotspot pc-object" disabled={scene !== "home"} onMouseEnter={() => reactToObject("小さなノートPC。画面の向こうは、店の外へ繋がっている。")} onClick={() => openScene("links")} aria-label="パソコンからリンクを見る">
         </button>
 
-        <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返してくる。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
+        <button className="hotspot picture" disabled={scene !== "home"} onMouseEnter={() => reactToObject("壁に掛けられた絵。近づくと、少しだけこちらを見返している気がする。")} onClick={() => openScene("about")} aria-label="壁の絵からこのサイトについて見る">
         </button>
 
         {scene !== "home" && <div className="scene-dimmer" aria-hidden="true" />}
