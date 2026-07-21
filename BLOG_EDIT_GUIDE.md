@@ -36,6 +36,9 @@ cover: blog/images/画像ファイル名.png
 - `published`：`true`で公開、`false`で非公開になります
 - `cover`：記事の表紙画像です。不要なら空欄のままで構いません
 
+`cover`を設定した記事は、記事URLをSNSやDiscordへ貼ったときにも、その画像と記事タイトルがリンクカードへ使われます。
+公開後の記事URLは `https://yohira6.github.io/RabbitHoleDiner/blog/記事ファイル名/` の形になります。
+
 ## 本文の書き方
 
 ```text

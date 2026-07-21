@@ -515,7 +515,7 @@ export default function Home() {
                 <p className="book-kicker">ABOUT THIS PLACE</p><h2>Rabbit Hole Diner</h2>
                 <p>ブログや作品、各種リンク等を並べるための個人サイトです。<br />個人サークル&quot;RabbitPunch&quot;が制作しました。</p>
                 <dl><div><dt>OWNER</dt><dd>よひらろく(yohira6)</dd></div><div><dt>e-mail</dt><dd><a href="mailto:rabbit.punch.art@gmail.com">rabbit.punch.art@gmail.com</a></dd></div></dl>
-                <a className="blog-placeholder" href="#/blog">
+                <a className="blog-placeholder" href={`${import.meta.env.BASE_URL}blog/`}>
                   <span>BLOG</span><strong>ブログ</strong><small>OPEN →</small>
                 </a>
               </div>

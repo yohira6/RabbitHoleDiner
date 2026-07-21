@@ -5,6 +5,9 @@ type BlogProps = {
   route: string;
 };
 
+const blogRootHref = `${import.meta.env.BASE_URL}blog/`;
+const blogPostHref = (slug: string) => `${blogRootHref}${encodeURIComponent(slug)}/`;
+
 function InlineText({ text }: { text: string }) {
   const tokens: ReactNode[] = [];
   const pattern = /(\*\*[^*]+\*\*|`[^`]+`|!?\[[^\]]+\]\([^)]+\))/g;
@@ -133,11 +136,11 @@ function MarkdownBody({ source }: { source: string }) {
 function BlogBrand() {
   return (
     <header className="blog-topbar">
-      <a className="blog-logo" href="#/" aria-label="Rabbit Hole Dinerへ戻る">
+      <a className="blog-logo" href={import.meta.env.BASE_URL} aria-label="Rabbit Hole Dinerへ戻る">
         <span className="brand-logo"><img src={`${import.meta.env.BASE_URL}branding/logo.png`} alt="Rabbit Hole Diner" /></span>
       </a>
       <div className="blog-topbar-copy"><small>RHD / BLOG</small><strong>BLOG</strong></div>
-      <a className="blog-back-diner" href="#/">← DINERへ戻る</a>
+      <a className="blog-back-diner" href={import.meta.env.BASE_URL}>← DINERへ戻る</a>
     </header>
   );
 }
@@ -145,12 +148,12 @@ function BlogBrand() {
 function PostCard({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
   return (
     <article className={`blog-card ${featured ? "blog-card--featured" : ""}`}>
-      {post.cover && <a className="blog-card-cover" href={`#/blog/${encodeURIComponent(post.slug)}`} tabIndex={-1}><img src={resolveBlogAsset(post.cover)} alt="" loading="lazy" /></a>}
+      {post.cover && <a className="blog-card-cover" href={blogPostHref(post.slug)} tabIndex={-1}><img src={resolveBlogAsset(post.cover)} alt="" loading="lazy" /></a>}
       <div className="blog-card-body">
         <div className="blog-meta"><time dateTime={post.date}>{formatBlogDate(post.date)}</time><span>{post.category}</span><span>{post.readingMinutes} MIN READ</span></div>
-        <h2><a href={`#/blog/${encodeURIComponent(post.slug)}`}>{post.title}</a></h2>
+        <h2><a href={blogPostHref(post.slug)}>{post.title}</a></h2>
         <p>{post.summary}</p>
-        <a className="blog-read-more" href={`#/blog/${encodeURIComponent(post.slug)}`}>記事を読む <span>→</span></a>
+        <a className="blog-read-more" href={blogPostHref(post.slug)}>記事を読む <span>→</span></a>
       </div>
     </article>
   );
@@ -194,7 +197,7 @@ function BlogArticle({ post }: { post: BlogPost }) {
 
   return (
     <article className="blog-article">
-      <a className="blog-list-back" href="#/blog">← 記事一覧へ戻る</a>
+      <a className="blog-list-back" href={blogRootHref}>← 記事一覧へ戻る</a>
       <header className="blog-article-header">
         <div className="blog-meta"><time dateTime={post.date}>{formatBlogDate(post.date)}</time><span>{post.category}</span><span>{post.readingMinutes} MIN READ</span></div>
         <h1>{post.title}</h1>
@@ -202,7 +205,7 @@ function BlogArticle({ post }: { post: BlogPost }) {
       </header>
       {post.cover && <figure className="blog-article-cover"><img src={resolveBlogAsset(post.cover)} alt="" /></figure>}
       <MarkdownBody source={post.body} />
-      <footer className="blog-article-footer"><span>END OF LOG</span><a href="#/blog">ほかの記事を見る →</a></footer>
+      <footer className="blog-article-footer"><span>END OF LOG</span><a href={blogRootHref}>ほかの記事を見る →</a></footer>
     </article>
   );
 }
@@ -212,12 +215,16 @@ export default function Blog({ route }: BlogProps) {
   const post = slug ? blogPosts.find((item) => item.slug === slug) : undefined;
 
   useEffect(() => { window.scrollTo({ top: 0, behavior: "auto" }); }, [route]);
+  useEffect(() => {
+    if (!window.location.hash.startsWith("#/blog")) return;
+    window.history.replaceState(null, "", slug ? blogPostHref(slug) : blogRootHref);
+  }, [slug]);
 
   return (
     <main className="blog-shell">
       <BlogBrand />
       <div className="blog-page">
-        {slug && !post ? <section className="blog-not-found"><small>404 / LOST LOG</small><h1>記事が見つかりません。</h1><a href="#/blog">ブログ一覧へ戻る</a></section> : post ? <BlogArticle post={post} /> : <BlogIndex />}
+        {slug && !post ? <section className="blog-not-found"><small>404 / LOST LOG</small><h1>記事が見つかりません。</h1><a href={blogRootHref}>ブログ一覧へ戻る</a></section> : post ? <BlogArticle post={post} /> : <BlogIndex />}
       </div>
       <footer className="blog-footer"><span>© 2026 RABBIT PUNCH</span><span>RABBIT HOLE DINER / BLOG</span></footer>
     </main>
