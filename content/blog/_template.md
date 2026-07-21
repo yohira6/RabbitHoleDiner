@@ -1,6 +1,7 @@
 ---
 title: ここに記事タイトル
 date: 2026-07-21
+updated: 2026-07-21
 category: 日記
 summary: 一覧画面に表示する短い説明文を書きます。
 published: false

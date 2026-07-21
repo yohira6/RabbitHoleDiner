@@ -141,6 +141,16 @@ button { color: inherit; }
 .blog-category-nav button { padding: 8px 14px; border: 2px solid var(--teal-dark); color: var(--teal-dark); background: var(--paper); font: 900 10px ui-monospace, monospace; letter-spacing: .1em; cursor: pointer; }
 .blog-category-nav button:hover, .blog-category-nav button.is-active { color: var(--paper); background: var(--red); border-color: var(--red); transform: translateY(-2px); }
 .blog-category-nav button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.blog-tools { display: grid; grid-template-columns: minmax(260px, 1fr) minmax(190px, auto) auto; align-items: end; gap: 12px; margin: 0 0 30px; padding: 16px; border: 3px solid var(--teal-dark); background: rgba(255,250,240,.92); box-shadow: 5px 5px 0 var(--red); }
+.blog-search, .blog-sort { display: grid; gap: 6px; color: var(--red); font: 900 9px ui-monospace, monospace; letter-spacing: .14em; }
+.blog-search-field { position: relative; }
+.blog-search input, .blog-sort select { width: 100%; min-height: 44px; border: 2px solid var(--teal-dark); border-radius: 0; color: var(--ink); background: var(--paper); font: 800 14px "Yu Gothic", "Hiragino Kaku Gothic ProN", system-ui, sans-serif; }
+.blog-search input { padding: 9px 70px 9px 12px; }
+.blog-search button { position: absolute; right: 7px; bottom: 7px; min-height: 30px; padding: 5px 8px; border: 0; color: var(--paper); background: var(--red); font: 900 8px ui-monospace, monospace; letter-spacing: .08em; cursor: pointer; }
+.blog-sort select { padding: 8px 34px 8px 10px; cursor: pointer; }
+.blog-search input:focus, .blog-sort select:focus { outline: 3px solid var(--gold); outline-offset: 2px; }
+.blog-result-count { align-self: center; margin: 15px 0 0; color: var(--teal); font: 900 9px ui-monospace, monospace; letter-spacing: .12em; white-space: nowrap; }
+.blog-result-count strong { color: var(--red); font-size: 18px; }
 .blog-post-list { display: grid; gap: 26px; }
 .blog-card { display: grid; min-width: 0; overflow: hidden; border: 3px solid var(--ink); background: rgba(255,250,240,.96); box-shadow: 8px 8px 0 var(--teal); }
 .blog-card--featured:has(.blog-card-cover) { grid-template-columns: minmax(240px, .88fr) 1.12fr; }
@@ -250,6 +260,7 @@ button { color: inherit; }
   .blog-hero { padding-top: 48px; }.blog-hero::after { bottom: 25%; }
   .blog-card--featured:has(.blog-card-cover) { grid-template-columns: 1fr; }.blog-card-cover { min-height: 210px; max-height: 430px; }
   .blog-card-grid { grid-template-columns: 1fr; }.blog-card-grid .blog-card-body { min-height: 0; }
+  .blog-tools { grid-template-columns: 1fr 1fr; }.blog-result-count { grid-column: 1 / -1; margin-top: 0; }
 }
 
 @media (max-width: 520px) {
@@ -270,6 +281,7 @@ button { color: inherit; }
   .blog-shell { padding: 10px; }.blog-topbar { min-height: 0; gap: 8px 10px; }.blog-logo { width: 100%; padding: 0 0 5px; }.blog-topbar-copy small { font-size: 7px; }.blog-topbar-copy strong { font-size: 25px; }.blog-back-diner { margin: 0 0 7px; padding: 6px 7px; font-size: 8px; }
   .blog-hero { padding: 42px 4px 38px; }.blog-hero h1 { font-size: clamp(42px, 16vw, 68px); }.blog-hero::after { right: 0; bottom: 23%; font-size: 58px; }.blog-hero > p:last-child { margin-top: 18px; }
   .blog-category-nav { margin-bottom: 18px; }.blog-category-nav button { flex: 1 1 auto; padding: 7px 9px; }
+  .blog-tools { grid-template-columns: 1fr; padding: 12px; }.blog-result-count { grid-column: auto; }.blog-search input, .blog-sort select { font-size: 12px; }
   .blog-card { box-shadow: 5px 5px 0 var(--teal); }.blog-card-body { padding: 20px 17px; }.blog-meta { gap: 5px 9px; font-size: 7px; }.blog-meta span { padding-left: 9px; }.blog-card h2 { margin-top: 14px; font-size: 28px; }.blog-card-cover { min-height: 160px; }
   .blog-adult-gate { margin: 28px auto; padding: 30px 18px; box-shadow: 6px 6px 0 var(--ink); }.blog-adult-gate-actions { flex-direction: column-reverse; }.blog-adult-gate-actions a, .blog-adult-gate-actions button { width: 100%; min-width: 0; }
   .blog-article { margin: 24px auto; padding: 24px 17px; box-shadow: 6px 6px 0 var(--teal); }.blog-list-back { margin-bottom: 30px; }.blog-article-header h1 { font-size: 39px; }.blog-article-cover { margin: 26px -8px 0; }.blog-markdown { font-size: 14px; line-height: 1.9; }.blog-markdown h2 { font-size: 28px; }.blog-markdown pre { margin-left: -8px; margin-right: -8px; padding: 13px; font-size: 12px; }.blog-article-footer, .blog-footer { flex-direction: column; }.blog-footer { margin-top: 50px; }

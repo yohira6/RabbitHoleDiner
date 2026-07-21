@@ -4,6 +4,7 @@ export type BlogPost = {
   slug: string;
   title: string;
   date: string;
+  updated: string;
   category: string;
   summary: string;
   cover?: string;
@@ -55,6 +56,7 @@ export const blogPosts: BlogPost[] = Object.entries(rawPosts)
       slug,
       title: meta.title || slug,
       date: meta.date || "",
+      updated: meta.updated || meta.date || "",
       category: meta.category || "日記",
       summary: meta.summary || body.split(/\r?\n\r?\n/)[0]?.replace(/^#+\s*/, "") || "",
       adult: meta.adult?.toLowerCase() === "true",
@@ -64,7 +66,7 @@ export const blogPosts: BlogPost[] = Object.entries(rawPosts)
     if (meta.cover) post.cover = meta.cover;
     return [post];
   })
-  .sort((a, b) => b.date.localeCompare(a.date));
+  .sort((a, b) => b.updated.localeCompare(a.updated));
 
 export function formatBlogDate(date: string) {
   const match = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);

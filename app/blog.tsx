@@ -166,8 +166,26 @@ function PostCard({ post, featured = false }: { post: BlogPost; featured?: boole
 
 function BlogIndex() {
   const [category, setCategory] = useState("ALL");
+  const [query, setQuery] = useState("");
+  const [sortOrder, setSortOrder] = useState<"desc" | "asc">("desc");
   const categories = useMemo(() => ["ALL", ...Array.from(new Set(blogPosts.map((post) => post.category)))], []);
-  const filtered = category === "ALL" ? blogPosts : blogPosts.filter((post) => post.category === category);
+  const filtered = useMemo(() => {
+    const normalizedQuery = query.trim().normalize("NFKC").toLocaleLowerCase("ja");
+    return blogPosts
+      .filter((post) => category === "ALL" || post.category === category)
+      .filter((post) => {
+        if (!normalizedQuery) return true;
+        const searchable = [post.title, post.summary, post.category, post.body]
+          .join("\n")
+          .normalize("NFKC")
+          .toLocaleLowerCase("ja");
+        return searchable.includes(normalizedQuery);
+      })
+      .sort((a, b) => {
+        const comparison = a.updated.localeCompare(b.updated) || a.slug.localeCompare(b.slug);
+        return sortOrder === "asc" ? comparison : -comparison;
+      });
+  }, [category, query, sortOrder]);
   const [featured, ...rest] = filtered;
 
   useEffect(() => {
@@ -186,8 +204,32 @@ function BlogIndex() {
         {categories.map((item) => <button type="button" key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>)}
       </nav>
 
+      <section className="blog-tools" aria-label="記事の検索と並び替え">
+        <div className="blog-search">
+          <label htmlFor="blog-search-input">SEARCH</label>
+          <div className="blog-search-field">
+            <input
+              id="blog-search-input"
+              type="search"
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              placeholder="タイトル・本文を検索"
+            />
+            {query && <button type="button" onClick={() => setQuery("")} aria-label="検索語を消す">CLEAR</button>}
+          </div>
+        </div>
+        <label className="blog-sort">
+          <span>SORT</span>
+          <select value={sortOrder} onChange={(event) => setSortOrder(event.target.value as "desc" | "asc")}>
+            <option value="desc">更新日：新しい順</option>
+            <option value="asc">更新日：古い順</option>
+          </select>
+        </label>
+        <p className="blog-result-count"><strong>{filtered.length}</strong> POSTS</p>
+      </section>
+
       <section className="blog-post-list" aria-live="polite">
-        {!featured && <div className="blog-empty"><strong>NO POSTS YET</strong><p>このカテゴリの記事は、まだありません。</p></div>}
+        {!featured && <div className="blog-empty"><strong>NO POSTS FOUND</strong><p>条件に合う記事が見つかりませんでした。</p></div>}
         {featured && <PostCard post={featured} featured />}
         {rest.length > 0 && <div className="blog-card-grid">{rest.map((post) => <PostCard key={post.slug} post={post} />)}</div>}
       </section>
