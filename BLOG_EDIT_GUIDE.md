@@ -25,6 +25,7 @@ date: 2026-07-21
 category: 日記
 summary: 一覧に表示する短い説明文
 published: true
+adult: false
 cover: blog/images/画像ファイル名.png
 ---
 ```
@@ -34,10 +35,22 @@ cover: blog/images/画像ファイル名.png
 - `category`：`日記`、`お知らせ`、`制作記録`など自由に入力できます
 - `summary`：記事一覧に表示する短い紹介文です
 - `published`：`true`で公開、`false`で非公開になります
+- `adult`：成人向け記事では`true`、通常の記事では`false`にします
 - `cover`：記事の表紙画像です。不要なら空欄のままで構いません
 
 `cover`を設定した記事は、記事URLをSNSやDiscordへ貼ったときにも、その画像と記事タイトルがリンクカードへ使われます。
 公開後の記事URLは `https://yohira6.github.io/RabbitHoleDiner/blog/記事ファイル名/` の形になります。
+
+## 成人向け記事に警告を出す
+
+記事上部の設定を次のように変更します。
+
+```text
+adult: true
+```
+
+ブログ一覧には`18+`と表示し、記事を開いたときは本文の前に成人向け警告が表示されます。
+カバー画像は通常の記事と同じように、一覧とリンクカードへ表示されます。
 
 ## 本文の書き方
 

@@ -147,10 +147,10 @@ function BlogBrand() {
 
 function PostCard({ post, featured = false }: { post: BlogPost; featured?: boolean }) {
   return (
-    <article className={`blog-card ${featured ? "blog-card--featured" : ""}`}>
+    <article className={`blog-card ${featured ? "blog-card--featured" : ""} ${post.adult ? "blog-card--adult" : ""}`}>
       {post.cover && <a className="blog-card-cover" href={blogPostHref(post.slug)} tabIndex={-1}><img src={resolveBlogAsset(post.cover)} alt="" loading="lazy" /></a>}
       <div className="blog-card-body">
-        <div className="blog-meta"><time dateTime={post.date}>{formatBlogDate(post.date)}</time><span>{post.category}</span><span>{post.readingMinutes} MIN READ</span></div>
+        <div className="blog-meta"><time dateTime={post.date}>{formatBlogDate(post.date)}</time><span>{post.category}</span><span>{post.readingMinutes} MIN READ</span>{post.adult && <strong className="blog-adult-badge">18+</strong>}</div>
         <h2><a href={blogPostHref(post.slug)}>{post.title}</a></h2>
         <p>{post.summary}</p>
         <a className="blog-read-more" href={blogPostHref(post.slug)}>記事を読む <span>→</span></a>
@@ -191,9 +191,26 @@ function BlogIndex() {
 }
 
 function BlogArticle({ post }: { post: BlogPost }) {
+  const [adultAccepted, setAdultAccepted] = useState(!post.adult);
+
   useEffect(() => {
     document.title = `${post.title} | Rabbit Hole Diner`;
   }, [post.title]);
+
+  if (!adultAccepted) {
+    return (
+      <section className="blog-adult-gate" aria-labelledby="adult-warning-title">
+        <p className="blog-adult-gate-kicker">AGE RESTRICTED / 18+</p>
+        <strong className="blog-adult-gate-mark" aria-hidden="true">18+</strong>
+        <h1 id="adult-warning-title">成人向けコンテンツを含みます</h1>
+        <p>この記事には18歳未満の方に適さない表現が含まれています。<br />18歳未満の方は閲覧できません。</p>
+        <div className="blog-adult-gate-actions">
+          <a href={blogRootHref}>ブログ一覧へ戻る</a>
+          <button type="button" onClick={() => setAdultAccepted(true)}>18歳以上なので閲覧する</button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <article className="blog-article">
@@ -224,7 +241,7 @@ export default function Blog({ route }: BlogProps) {
     <main className="blog-shell">
       <BlogBrand />
       <div className="blog-page">
-        {slug && !post ? <section className="blog-not-found"><small>404 / LOST LOG</small><h1>記事が見つかりません。</h1><a href={blogRootHref}>ブログ一覧へ戻る</a></section> : post ? <BlogArticle post={post} /> : <BlogIndex />}
+        {slug && !post ? <section className="blog-not-found"><small>404 / LOST LOG</small><h1>記事が見つかりません。</h1><a href={blogRootHref}>ブログ一覧へ戻る</a></section> : post ? <BlogArticle key={post.slug} post={post} /> : <BlogIndex />}
       </div>
       <footer className="blog-footer"><span>© 2026 RABBIT PUNCH</span><span>RABBIT HOLE DINER / BLOG</span></footer>
     </main>

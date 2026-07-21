@@ -77,10 +77,11 @@ function blogSharePages(): Plugin {
 
         const slug = file.replace(/\.md$/i, "");
         const pageUrl = `${siteUrl}blog/${encodeURIComponent(slug)}/`;
+        const isAdult = meta.adult?.toLowerCase() === "true";
         const imageUrl = meta.cover ? new URL(meta.cover.replace(/^\.?\//, ""), siteUrl).href : undefined;
         const articleHtml = withShareMeta(template, {
-          title: `${meta.title || slug} | Rabbit Hole Diner`,
-          description: meta.summary || "Rabbit Hole Dinerのブログ記事です。",
+          title: `${isAdult ? "[18+] " : ""}${meta.title || slug} | Rabbit Hole Diner`,
+          description: isAdult ? `成人向けの内容を含みます。${meta.summary || ""}` : meta.summary || "Rabbit Hole Dinerのブログ記事です。",
           url: pageUrl,
           image: imageUrl,
         });

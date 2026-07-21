@@ -7,6 +7,7 @@ export type BlogPost = {
   category: string;
   summary: string;
   cover?: string;
+  adult: boolean;
   body: string;
   readingMinutes: number;
 };
@@ -56,6 +57,7 @@ export const blogPosts: BlogPost[] = Object.entries(rawPosts)
       date: meta.date || "",
       category: meta.category || "日記",
       summary: meta.summary || body.split(/\r?\n\r?\n/)[0]?.replace(/^#+\s*/, "") || "",
+      adult: meta.adult?.toLowerCase() === "true",
       body,
       readingMinutes: readingMinutes(body),
     };
