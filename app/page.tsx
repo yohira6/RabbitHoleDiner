@@ -516,7 +516,7 @@ export default function Home() {
                 <p>ブログや作品、各種リンク等を並べるための個人サイトです。<br />個人サークル&quot;RabbitPunch&quot;が制作しました。</p>
                 <dl><div><dt>OWNER</dt><dd>よひらろく(yohira6)</dd></div><div><dt>e-mail</dt><dd><a href="mailto:rabbit.punch.art@gmail.com">rabbit.punch.art@gmail.com</a></dd></div></dl>
                 <a className="blog-placeholder" href="#/blog">
-                  <span>BLOG</span><strong>オーナーズログ</strong><small>OPEN →</small>
+                  <span>BLOG</span><strong>ブログ</strong><small>OPEN →</small>
                 </a>
               </div>
             )}

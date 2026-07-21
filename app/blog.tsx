@@ -136,7 +136,7 @@ function BlogBrand() {
       <a className="blog-logo" href="#/" aria-label="Rabbit Hole Dinerへ戻る">
         <span className="brand-logo"><img src={`${import.meta.env.BASE_URL}branding/logo.png`} alt="Rabbit Hole Diner" /></span>
       </a>
-      <div className="blog-topbar-copy"><small>OWNER&apos;S LOG / RHD</small><strong>BLOG</strong></div>
+      <div className="blog-topbar-copy"><small>RHD / BLOG</small><strong>BLOG</strong></div>
       <a className="blog-back-diner" href="#/">← DINERへ戻る</a>
     </header>
   );
@@ -169,8 +169,8 @@ function BlogIndex() {
   return (
     <>
       <section className="blog-hero">
-        <p className="blog-eyebrow">FROM THE OWNER&apos;S DESK</p>
-        <h1>夜更けの<br />オーナーズログ。</h1>
+        <p className="blog-eyebrow">RABBIT PUNCH BLOG</p>
+        <h1>日記「」。</h1>
         <p>制作の話や日々のこと、サイトの更新情報を置いています。</p>
       </section>
 
@@ -219,7 +219,7 @@ export default function Blog({ route }: BlogProps) {
       <div className="blog-page">
         {slug && !post ? <section className="blog-not-found"><small>404 / LOST LOG</small><h1>記事が見つかりません。</h1><a href="#/blog">ブログ一覧へ戻る</a></section> : post ? <BlogArticle post={post} /> : <BlogIndex />}
       </div>
-      <footer className="blog-footer"><span>© 2026 RABBIT PUNCH</span><span>RABBIT HOLE DINER / OWNER&apos;S LOG</span></footer>
+      <footer className="blog-footer"><span>© 2026 RABBIT PUNCH</span><span>RABBIT HOLE DINER / BLOG</span></footer>
     </main>
   );
 }
