@@ -189,6 +189,10 @@ button { color: inherit; }
 .blog-markdown h4 { margin: 1.8em 0 .5em; font-size: clamp(18px, 2.4vw, 24px); }
 .blog-markdown p { margin: 1.25em 0; }
 .blog-markdown a { color: var(--red); font-weight: 800; text-decoration-thickness: 2px; text-underline-offset: 4px; overflow-wrap: anywhere; }
+.blog-markdown del { color: var(--teal); text-decoration-color: var(--red); text-decoration-thickness: 2px; }
+.blog-text-muted { opacity: .48; }
+.blog-text-small { font-size: .76em; }
+.blog-text-large { display: inline-block; font-size: 1.38em; font-weight: 900; line-height: 1.35; }
 .blog-markdown code { padding: .12em .35em; color: var(--red-dark); background: var(--cream); border: 1px solid rgba(51,117,127,.28); font-family: ui-monospace, monospace; }
 .blog-markdown pre { max-width: 100%; overflow-x: auto; padding: 18px; color: var(--paper); background: var(--ink); border-left: 6px solid var(--red); line-height: 1.7; }
 .blog-markdown pre code { padding: 0; color: inherit; background: transparent; border: 0; }

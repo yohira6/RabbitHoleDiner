@@ -10,7 +10,7 @@ const blogPostHref = (slug: string) => `${blogRootHref}${encodeURIComponent(slug
 
 function InlineText({ text }: { text: string }) {
   const tokens: ReactNode[] = [];
-  const pattern = /(\*\*[^*]+\*\*|`[^`]+`|!?\[[^\]]+\]\([^)]+\))/g;
+  const pattern = /(\*\*[^*]+\*\*|~~[^~]+~~|::(?:muted|small|large)\[[^\]]+\]|`[^`]+`|!?\[[^\]]+\]\([^)]+\))/g;
   let cursor = 0;
   let match: RegExpExecArray | null;
 
@@ -20,6 +20,11 @@ function InlineText({ text }: { text: string }) {
 
     if (token.startsWith("**")) {
       tokens.push(<strong key={`${match.index}-strong`}>{token.slice(2, -2)}</strong>);
+    } else if (token.startsWith("~~")) {
+      tokens.push(<del key={`${match.index}-strike`}>{token.slice(2, -2)}</del>);
+    } else if (token.startsWith("::")) {
+      const styled = token.match(/^::(muted|small|large)\[([^\]]+)\]$/);
+      if (styled) tokens.push(<span key={`${match.index}-${styled[1]}`} className={`blog-text-${styled[1]}`}>{styled[2]}</span>);
     } else if (token.startsWith("`")) {
       tokens.push(<code key={`${match.index}-code`}>{token.slice(1, -1)}</code>);
     } else if (token.startsWith("![")) {
