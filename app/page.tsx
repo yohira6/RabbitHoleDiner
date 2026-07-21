@@ -515,9 +515,9 @@ export default function Home() {
                 <p className="book-kicker">ABOUT THIS PLACE</p><h2>Rabbit Hole Diner</h2>
                 <p>ブログや作品、各種リンク等を並べるための個人サイトです。<br />個人サークル&quot;RabbitPunch&quot;が制作しました。</p>
                 <dl><div><dt>OWNER</dt><dd>よひらろく(yohira6)</dd></div><div><dt>e-mail</dt><dd><a href="mailto:rabbit.punch.art@gmail.com">rabbit.punch.art@gmail.com</a></dd></div></dl>
-                <button type="button" className="blog-placeholder" onClick={() => { setTyped(""); setDialogueRun((current) => current + 1); setLine("ブログページは準備中だよ。公開までもう少し待っていてね。"); }}>
-                  <span>BLOG</span><strong>ブログページ</strong><small>COMING SOON →</small>
-                </button>
+                <a className="blog-placeholder" href="#/blog">
+                  <span>BLOG</span><strong>オーナーズログ</strong><small>OPEN →</small>
+                </a>
               </div>
             )}
             {scene === "links" && (
